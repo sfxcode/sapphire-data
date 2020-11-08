@@ -14,24 +14,24 @@ import com.sfxcode.sapphire.data.reflect.PropertyType.{
   TypeLong,
   _
 }
-import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldMetaRegistry}
+import com.sfxcode.sapphire.data.reflect.{ FieldMeta, FieldMetaRegistry }
 import javafx.beans.property._
 import javafx.beans.value.ChangeListener
-import javafx.collections.{FXCollections, ObservableMap}
-import javafx.util.converter.{DateStringConverter, DateTimeStringConverter}
+import javafx.collections.{ FXCollections, ObservableMap }
+import javafx.util.converter.{ DateStringConverter, DateTimeStringConverter }
 
 import scala.collection.mutable
 
 abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeListener[Any] {
-  lazy val changeManagementMap: ObservableMap[String, Any]   = FXCollections.observableHashMap[String, Any]()
-  lazy val hasChangesProperty                                = new SimpleBooleanProperty(data, "_hasChanges", false)
+  lazy val changeManagementMap: ObservableMap[String, Any] = FXCollections.observableHashMap[String, Any]()
+  lazy val hasChangesProperty = new SimpleBooleanProperty(data, "_hasChanges", false)
   lazy val expressionMap: ObservableMap[String, Property[_]] = FXCollections.observableHashMap[String, Property[_]]()
-  lazy val propertyMap: ObservableMap[String, Property[_]]   = FXCollections.observableHashMap[String, Property[_]]()
-  val childrenMap                                            = new mutable.HashMap[String, DataAdapter[AnyRef]]
-  val EmptyMemberInfo                                        = FieldMeta("name_ignored")
-  val memberInfoMap: Map[String, FieldMeta]                  = typeHints.map(info => (info.name, info)).toMap
-  var parentBean: Option[DataAdapter[AnyRef]]                = None
-  var trackChanges                                           = true
+  lazy val propertyMap: ObservableMap[String, Property[_]] = FXCollections.observableHashMap[String, Property[_]]()
+  val childrenMap = new mutable.HashMap[String, DataAdapter[AnyRef]]
+  val EmptyMemberInfo = FieldMeta("name_ignored")
+  val memberInfoMap: Map[String, FieldMeta] = typeHints.map(info => (info.name, info)).toMap
+  var parentBean: Option[DataAdapter[AnyRef]] = None
+  var trackChanges = true
 
   def data: AnyRef
 
@@ -60,12 +60,11 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
   def getProperty(key: String): Property[_] =
     if (key.contains(".") && !ObjectExpressionHelper.isExpressionKey(key)) {
       val objectKey = key.substring(0, key.indexOf("."))
-      val newKey    = key.substring(key.indexOf(".") + 1)
-      val value     = getValue(objectKey)
+      val newKey = key.substring(key.indexOf(".") + 1)
+      val value = getValue(objectKey)
       val childBean = createChildForKey(objectKey, value)
       childBean.getProperty(newKey)
-    }
-    else {
+    } else {
       if ("_hasChanges".equals(key))
         return hasChangesProperty
       var value = getValue(key)
@@ -79,15 +78,15 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
       }
       value match {
         case value1: Property[_] => value1
-        case _                   =>
+        case _ =>
           // lookup in local function
           var info = memberInfo(key)
           if (info.signature == TypeUnknown)
             // lookup in registry
             data match {
-              case map: mutable.Map[String, Any]       =>
+              case map: mutable.Map[String, Any] =>
               case javaMap: java.util.Map[String, Any] =>
-              case _                                   => info = FieldMetaRegistry.fieldMeta(data, key)
+              case _ => info = FieldMetaRegistry.fieldMeta(data, key)
             }
 
           if (info.signature != TypeUnknown)
@@ -96,10 +95,10 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
             else {
               var result: Any = null
               info.signature match {
-                case TypeInt     => result = new SimpleIntegerProperty(data, info.name, value.asInstanceOf[Integer])
-                case TypeLong    => result = new SimpleLongProperty(data, info.name, value.asInstanceOf[Long])
-                case TypeFloat   => result = new SimpleFloatProperty(data, info.name, value.asInstanceOf[Float])
-                case TypeDouble  => result = new SimpleDoubleProperty(data, info.name, value.asInstanceOf[Double])
+                case TypeInt => result = new SimpleIntegerProperty(data, info.name, value.asInstanceOf[Integer])
+                case TypeLong => result = new SimpleLongProperty(data, info.name, value.asInstanceOf[Long])
+                case TypeFloat => result = new SimpleFloatProperty(data, info.name, value.asInstanceOf[Float])
+                case TypeDouble => result = new SimpleDoubleProperty(data, info.name, value.asInstanceOf[Double])
                 case TypeBoolean => result = new SimpleBooleanProperty(data, info.name, value.asInstanceOf[Boolean])
                 case TypeLocalDate =>
                   result = new SimpleObjectProperty(data, info.name, value.asInstanceOf[LocalDate])
@@ -117,13 +116,13 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
             var result: Any = null
 
             value match {
-              case i: Integer    => result = new SimpleIntegerProperty(data, info.name, i)
-              case l: Long       => result = new SimpleLongProperty(data, info.name, l)
-              case f: Float      => result = new SimpleFloatProperty(data, info.name, f)
-              case d: Double     => result = new SimpleDoubleProperty(data, info.name, d)
-              case b: Boolean    => result = new SimpleBooleanProperty(data, info.name, b)
+              case i: Integer => result = new SimpleIntegerProperty(data, info.name, i)
+              case l: Long => result = new SimpleLongProperty(data, info.name, l)
+              case f: Float => result = new SimpleFloatProperty(data, info.name, f)
+              case d: Double => result = new SimpleDoubleProperty(data, info.name, d)
+              case b: Boolean => result = new SimpleBooleanProperty(data, info.name, b)
               case ld: LocalDate => result = new SimpleObjectProperty(data, info.name, ld)
-              case _             => result = createPropertyForObject(value, info.name)
+              case _ => result = createPropertyForObject(value, info.name)
             }
 
             val property = result.asInstanceOf[Property[_]]
@@ -138,8 +137,8 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
     property match {
       case property: StringProperty =>
         value match {
-          case s: String             => property.set(s)
-          case d: java.util.Date     => property.set(defaultDateConverter.toString(d))
+          case s: String => property.set(s)
+          case d: java.util.Date => property.set(defaultDateConverter.toString(d))
           case c: java.util.Calendar => property.set(defaultDateConverter.toString(c.getTime))
           case c: javax.xml.datatype.XMLGregorianCalendar =>
             property.set(defaultDateConverter.toString(c.toGregorianCalendar.getTime))
@@ -149,13 +148,13 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
             else
               property.set(null)
         }
-      case i: IntegerProperty     => i.set(value.asInstanceOf[Integer])
-      case l: LongProperty        => l.set(value.asInstanceOf[Long])
-      case f: FloatProperty       => f.set(value.asInstanceOf[Float])
-      case d: DoubleProperty      => d.set(value.asInstanceOf[Double])
-      case b: BooleanProperty     => b.set(value.asInstanceOf[Boolean])
+      case i: IntegerProperty => i.set(value.asInstanceOf[Integer])
+      case l: LongProperty => l.set(value.asInstanceOf[Long])
+      case f: FloatProperty => f.set(value.asInstanceOf[Float])
+      case d: DoubleProperty => d.set(value.asInstanceOf[Double])
+      case b: BooleanProperty => b.set(value.asInstanceOf[Boolean])
       case o: ObjectProperty[Any] => o.set(value)
-      case _                      =>
+      case _ =>
     }
 
   def hasManagedChanges: lang.Boolean = {
@@ -172,17 +171,17 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
 
   protected def createPropertyForObject(value: Any, name: String): Any = {
     val propertyValue: Any = value match {
-      case d: java.util.Date     => defaultDateConverter.toString(d)
+      case d: java.util.Date => defaultDateConverter.toString(d)
       case c: java.util.Calendar => defaultDateConverter.toString(c.getTime)
       case c: javax.xml.datatype.XMLGregorianCalendar =>
         defaultDateConverter.toString(c.toGregorianCalendar.getTime)
       case v: AnyRef => v
-      case _         => ""
+      case _ => ""
     }
     propertyValue match {
       case s: String => new SimpleStringProperty(data, name, s)
       case v: AnyRef => new SimpleObjectProperty(data, name, v)
-      case _         => new SimpleStringProperty(data, name, "s")
+      case _ => new SimpleStringProperty(data, name, "s")
     }
   }
 
@@ -201,9 +200,9 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
 
 object FieldProperties extends Configuration {
 
-  val DefaultDateConverterPattern: String     = configStringValue("sapphire.defaultDateConverterPattern")
+  val DefaultDateConverterPattern: String = configStringValue("sapphire.defaultDateConverterPattern")
   val DefaultDateTimeConverterPattern: String = configStringValue("sapphire.defaultDateTimeConverterPattern")
 
-  var defaultDateConverter     = new DateStringConverter(DefaultDateConverterPattern)
+  var defaultDateConverter = new DateStringConverter(DefaultDateConverterPattern)
   var defaultDateTimeConverter = new DateTimeStringConverter(DefaultDateTimeConverterPattern)
 }

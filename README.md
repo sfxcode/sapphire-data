@@ -12,9 +12,9 @@ Sapphire Data is heavily used in the sapphire ui frameworks:
 
 Documentation under [https://sfxcode.github.io/sapphire-data](https://sfxcode.github.io/sapphire-data)
 
-## Travis
+## CI
 
-[![Build Status](https://travis-ci.org/sfxcode/sapphire-data.svg?branch=master)](https://travis-ci.org/sfxcode/sapphire-data)
+![Scala CI](https://github.com/sfxcode/sapphire-data/workflows/Scala%20CI/badge.svg)
 
 ## Download
 
