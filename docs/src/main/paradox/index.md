@@ -55,6 +55,7 @@ resolvers += "sfxcode-bintray" at "https://dl.bintray.com/sfxcode/maven"
 
  - [adapter](adapter.md)
  - [expression_language](expression_language.md)
+ - [reports](report/index.md)
  - [Changes ](changes.md)
 
 @@@
