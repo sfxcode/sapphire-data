@@ -11,7 +11,7 @@ class DataAdapterPerformanceSpec extends Specification with LazyLogging {
       val testBean = DataAdapter[TestClass](new TestClass())
       testBean.getValue("name") must be equalTo "test"
       testBean.getValue("age") must be equalTo 42
-      val max   = 1000
+      val max = 1000
       val start = System.currentTimeMillis()
 
       (1 to max).foreach { i =>

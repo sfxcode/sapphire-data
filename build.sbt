@@ -56,6 +56,8 @@ val osName = System.getProperty("os.name") match {
 
 libraryDependencies += "org.specs2" %% "specs2-core" % "4.10.5" % Test
 
+libraryDependencies += "org.json4s" %% "json4s-native" % Json4sVersion % Test
+
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test
 
 // Compile
@@ -73,6 +75,13 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 // Expression Language
 
 libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.39"
+
+// optional report support
+resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
+
+libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.15.0" % Provided
+
+libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1" % Provided
 
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
