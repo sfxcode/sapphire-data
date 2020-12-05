@@ -7,7 +7,7 @@ name := "sapphire-data"
 
 organization := "com.sfxcode.sapphire"
 
-crossScalaVersions := Seq("2.13.3", "2.12.12")
+crossScalaVersions := Seq("2.13.4", "2.12.12")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -30,10 +30,11 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(ParadoxMaterialThemePlugin)
   .enablePlugins(GhpagesPlugin)
   .settings(
-    scalaVersion := "2.13.1",
-    name := "sapphire data docs",
+    scalaVersion := "2.13.4",
+    name := "sapphire-data-docs",
     publish / skip := true,
     ghpagesNoJekyll := true,
+    previewFixedPort := Some(9016),
     git.remoteRepo := "git@github.com:sfxcode/sapphire-data.git",
     Compile / paradoxMaterialTheme ~= {
       _.withRepository(uri("https://github.com/sfxcode/sapphire-data"))
@@ -66,7 +67,7 @@ libraryDependencies ++= Seq("base").map(m => "org.openjfx" % s"javafx-$m" % Java
 
 // Environment
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.2.0"
+libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.3.1"
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
 
@@ -74,12 +75,12 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.39"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.40"
 
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
 
-libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.15.0" % Provided
+libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.16.0" % Provided
 
 libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1" % Provided
 

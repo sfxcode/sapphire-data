@@ -3,10 +3,9 @@
 A Framework for data handling. It provides an adapter for beans and maps with JavaFX Property support.
 
 ## Sapphire Frameworks
-Sapphire Data is heavily used in the sapphire ui frameworks:
+Sapphire Data is heavily used in the sapphire ui framework:
 
-* [sapphire-core](https://sfxcode.github.io/sapphire-core/)
-* [sapphire-extension](https://sfxcode.github.io/sapphire-extension/)
+* [sapphire-javafx](https://sfxcode.github.io/sapphire-javafx/)
 
 ## Documentation
 
@@ -18,7 +17,7 @@ Documentation under [https://sfxcode.github.io/sapphire-data](https://sfxcode.gi
 
 ## Download
 
-[ ![Download](https://api.bintray.com/packages/sfxcode/maven/sapphire-data/images/download.svg) ](https://bintray.com/sfxcode/maven/sapphire-data/_latestVersion)
+[![Download](https://api.bintray.com/packages/sfxcode/maven/sapphire-data/images/download.svg) ](https://bintray.com/sfxcode/maven/sapphire-data/_latestVersion)
 
 ## Cross Build
 
