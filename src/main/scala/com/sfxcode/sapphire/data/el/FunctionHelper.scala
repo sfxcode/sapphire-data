@@ -3,7 +3,7 @@ package com.sfxcode.sapphire.data.el
 import java.lang.reflect.Method
 
 import com.typesafe.scalalogging.LazyLogging
-import javafx.collections.{ FXCollections, ObservableMap }
+import javafx.collections.{FXCollections, ObservableMap}
 import javax.el.ELProcessor
 
 case class FunctionHelper(processor: ELProcessor) extends LazyLogging {

@@ -29,7 +29,7 @@ class DataAdapterUpdateSpec extends Specification {
   "FXBean" should {
     "update java member value" in {
       val bean: TestJavaBean = new TestJavaBean()
-      val testBean = DataAdapter(bean)
+      val testBean           = DataAdapter(bean)
       testBean.updateValue("name", "new")
       testBean.getValue("name") must be equalTo "new"
       testBean("name") must be equalTo "new"

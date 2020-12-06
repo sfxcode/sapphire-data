@@ -1,6 +1,6 @@
 package com.sfxcode.sapphire.data.reflect
 
-import java.lang.reflect.{ Field, ParameterizedType }
+import java.lang.reflect.{Field, ParameterizedType}
 import java.time.LocalDate
 import java.util.Date
 
@@ -8,7 +8,8 @@ import scala.collection.mutable
 
 object PropertyType extends Enumeration {
   type PropertyValue = Value
-  val TypeUnknown, TypeString, TypeInt, TypeLong, TypeFloat, TypeDouble, TypeBoolean, TypeLocalDate, TypeDate, TypeObject = Value
+  val TypeUnknown, TypeString, TypeInt, TypeLong, TypeFloat, TypeDouble, TypeBoolean, TypeLocalDate, TypeDate,
+      TypeObject = Value
 }
 
 import com.sfxcode.sapphire.data.reflect.PropertyType._
@@ -31,9 +32,9 @@ object FieldMetaRegistry {
     if (fieldOption.isDefined) {
       val field = fieldOption.get
 
-      val memberClazz = field.getType
+      val memberClazz           = field.getType
       var optionClass: Class[_] = classOf[Any]
-      val isOption = memberClazz.getName.contains("scala.Option")
+      val isOption              = memberClazz.getName.contains("scala.Option")
 
       if (isOption) {
         val typeClass = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()(0)
@@ -44,7 +45,8 @@ object FieldMetaRegistry {
             val optionValue = testValue.asInstanceOf[Option[_]].get
             optionClass = optionValue.getClass
           }
-        } else
+        }
+        else
           optionClass = typeClass.asInstanceOf[Class[_]]
 
         println(optionClass)

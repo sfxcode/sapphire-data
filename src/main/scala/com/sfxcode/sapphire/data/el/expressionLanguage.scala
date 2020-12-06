@@ -15,8 +15,8 @@ object Expressions {
   if (!props.containsKey("org.apache.el.ExpressionBuilder.CACHE_SIZE"))
     props.put("org.apache.el.ExpressionBuilder.CACHE_SIZE", "10000")
 
-  val processor: ELProcessor = new ELProcessor
-  val manager: ELManager = processor.getELManager
+  val processor: ELProcessor     = new ELProcessor
+  val manager: ELManager         = processor.getELManager
   val factory: ExpressionFactory = ExpressionFactory.newInstance(props)
   val context: StandardELContext = manager.getELContext
 
@@ -33,9 +33,10 @@ object Expressions {
   }
 
   def evaluateExpressionOnObject[T <: Any](
-    obj: AnyRef,
-    expression: String,
-    clazz: Class[AnyRef] = classOf[Object]): Option[T] = {
+      obj: AnyRef,
+      expression: String,
+      clazz: Class[AnyRef] = classOf[Object]
+  ): Option[T] = {
 
     val result: Option[Any] = ObjectExpressionHelper.getValue(obj, expression: String, clazz)
 
@@ -59,8 +60,8 @@ object Expressions {
   def registeredBean[T <: AnyRef]()(implicit ct: ClassTag[T]): Option[T] = {
 
     val simpleName = ct.runtimeClass.getSimpleName
-    val key = "%s%s".format(simpleName.head.toLower, simpleName.tail)
-    val bean = evaluateExpressionOnObject(this, "${%s}".format(key))
+    val key        = "%s%s".format(simpleName.head.toLower, simpleName.tail)
+    val bean       = evaluateExpressionOnObject(this, "${%s}".format(key))
 
     if (bean.isDefined && bean.get.isInstanceOf[T])
       Some(bean.get.asInstanceOf[T])
