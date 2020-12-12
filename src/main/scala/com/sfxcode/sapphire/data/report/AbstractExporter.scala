@@ -10,11 +10,12 @@ import net.sf.jasperreports.engine._
 import net.sf.jasperreports.engine.util.JRLoader
 
 case class ReportExportResult(
-  completed: Boolean,
-  executionTime: Long,
-  exportFile: File,
-  jasperUrl: URL,
-  exception: Option[Exception] = None)
+    completed: Boolean,
+    executionTime: Long,
+    exportFile: File,
+    jasperUrl: URL,
+    exception: Option[Exception] = None
+)
 
 abstract class AbstractExporter(jasperUrl: URL) extends LazyLogging {
 
@@ -27,7 +28,8 @@ abstract class AbstractExporter(jasperUrl: URL) extends LazyLogging {
         val jasperFile = File.newTemporaryFile(suffix = SuffixJasper)
         JasperCompileManager.compileReportToFile(file.pathAsString, jasperFile.pathAsString)
         JRLoader.loadObject(jasperFile.url).asInstanceOf[JasperReport]
-      } else
+      }
+      else
         JRLoader.loadObject(jasperUrl).asInstanceOf[JasperReport]
 
     }
@@ -40,6 +42,6 @@ abstract class AbstractExporter(jasperUrl: URL) extends LazyLogging {
 }
 
 object AbstractExporter {
-  val SuffixJrxml = ".jrxml"
+  val SuffixJrxml  = ".jrxml"
   val SuffixJasper = ".jasper"
 }

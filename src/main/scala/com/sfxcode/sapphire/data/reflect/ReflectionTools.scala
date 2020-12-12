@@ -6,14 +6,14 @@ object ReflectionTools extends LazyLogging {
 
   def getFieldValue(target: Any, name: String): Any = {
     val fieldMeta = FieldMetaRegistry.fieldMeta(target.asInstanceOf[AnyRef], name)
-    val field = fieldMeta.field
+    val field     = fieldMeta.field
     field.setAccessible(true)
     field.get(target)
   }
 
   def setFieldValue(target: Any, name: String, value: Any): Unit = {
     val fieldMeta = FieldMetaRegistry.fieldMeta(target.asInstanceOf[AnyRef], name)
-    val field = fieldMeta.field
+    val field     = fieldMeta.field
 
     try {
       field.setAccessible(true)
@@ -27,7 +27,8 @@ object ReflectionTools extends LazyLogging {
           field.set(target, Some(value))
       else
         field.set(target, value)
-    } catch {
+    }
+    catch {
       case _: Exception => logger.debug("can not update %s for field %s".format(value, name))
     }
 

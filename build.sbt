@@ -41,7 +41,7 @@ lazy val docs = (project in file("docs"))
 
     },
     (Compile / paradoxMarkdownToHtml / excludeFilter) := (Compile / paradoxMarkdownToHtml / excludeFilter).value ||
-          ParadoxPlugin.InDirectoryFilter((Compile / paradox / sourceDirectory).value / "includes")
+    ParadoxPlugin.InDirectoryFilter((Compile / paradox / sourceDirectory).value / "includes")
   )
 
 val JavaFXVersion = "15.0.1"
