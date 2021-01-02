@@ -1,25 +1,16 @@
 package com.sfxcode.sapphire.data
 
-import java.lang
-import java.time.LocalDate
-
 import com.sfxcode.sapphire.data.FieldProperties.defaultDateConverter
 import com.sfxcode.sapphire.data.el.ObjectExpressionHelper
-import com.sfxcode.sapphire.data.reflect.PropertyType.{
-  TypeBoolean,
-  TypeDouble,
-  TypeFloat,
-  TypeInt,
-  TypeLocalDate,
-  TypeLong,
-  _
-}
+import com.sfxcode.sapphire.data.reflect.PropertyType._
 import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldMetaRegistry}
 import javafx.beans.property._
 import javafx.beans.value.ChangeListener
 import javafx.collections.{FXCollections, ObservableMap}
 import javafx.util.converter.{DateStringConverter, DateTimeStringConverter}
 
+import java.lang
+import java.time.LocalDate
 import scala.collection.mutable
 
 abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeListener[Any] {
@@ -27,11 +18,12 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
   lazy val hasChangesProperty                                = new SimpleBooleanProperty(data, "_hasChanges", false)
   lazy val expressionMap: ObservableMap[String, Property[_]] = FXCollections.observableHashMap[String, Property[_]]()
   lazy val propertyMap: ObservableMap[String, Property[_]]   = FXCollections.observableHashMap[String, Property[_]]()
-  val childrenMap                                            = new mutable.HashMap[String, DataAdapter[AnyRef]]
-  val EmptyMemberInfo                                        = FieldMeta("name_ignored")
-  val memberInfoMap: Map[String, FieldMeta]                  = typeHints.map(info => (info.name, info)).toMap
-  var parentBean: Option[DataAdapter[AnyRef]]                = None
-  var trackChanges                                           = true
+
+  val childrenMap                             = new mutable.HashMap[String, DataAdapter[AnyRef]]
+  val EmptyMemberInfo: FieldMeta              = FieldMeta("name_ignored")
+  val memberInfoMap: Map[String, FieldMeta]   = typeHints.map(info => (info.name, info)).toMap
+  var parentBean: Option[DataAdapter[AnyRef]] = None
+  var trackChanges                            = true
 
   def data: AnyRef
 
@@ -66,8 +58,9 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
       childBean.getProperty(newKey)
     }
     else {
-      if ("_hasChanges".equals(key))
+      if ("_hasChanges".equals(key)) {
         return hasChangesProperty
+      }
       var value = getValue(key)
       value match {
         case option: Option[_] =>

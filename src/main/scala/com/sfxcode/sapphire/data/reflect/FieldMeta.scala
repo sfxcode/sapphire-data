@@ -8,10 +8,10 @@ case class FieldMeta(
     name: String,
     signature: PropertyValue = TypeUnknown,
     isOption: Boolean = false,
-    field: Field = null
+    field: Option[Field] = None
 )
 
 object FieldMeta {
-  val EmptyTypeHints = List[FieldMeta]()
+  val EmptyTypeHints: List[FieldMeta] = List[FieldMeta]()
 
 }

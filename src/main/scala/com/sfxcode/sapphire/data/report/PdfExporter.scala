@@ -10,14 +10,6 @@ case class PdfExporter(jasperUrl: URL, reportContext: JasperReportsContext = Def
     extends AbstractExporter(jasperUrl) {
   private val exporter = new JRPdfExporter(reportContext)
 
-  /** Report Exporter
-    * @param exportFile
-    * @param parameter
-    * @param dataSource
-    * @param exporterConfiguration
-    * @param reportConfiguration
-    * @return ReportExportResult
-    */
   def exportReport(
       exportFile: File,
       parameter: Map[String, AnyRef] = Map(),

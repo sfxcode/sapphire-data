@@ -75,7 +75,7 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.41"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.0"
 
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"

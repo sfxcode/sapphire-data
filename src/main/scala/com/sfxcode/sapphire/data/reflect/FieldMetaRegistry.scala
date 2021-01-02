@@ -1,9 +1,8 @@
 package com.sfxcode.sapphire.data.reflect
 
-import java.lang.reflect.{Field, ParameterizedType}
+import java.lang.reflect.ParameterizedType
 import java.time.LocalDate
 import java.util.Date
-
 import scala.collection.mutable
 
 object PropertyType extends Enumeration {
@@ -53,41 +52,41 @@ object FieldMetaRegistry {
       }
 
       if (isOption && optionClass == classOf[String])
-        result = FieldMeta(name, TypeString, isOption = true, field)
+        result = FieldMeta(name, TypeString, isOption = true, Some(field))
       else if (memberClazz == classOf[String])
-        result = FieldMeta(name, TypeString, isOption = false, field)
+        result = FieldMeta(name, TypeString, isOption = false, Some(field))
       else if (isOption && (optionClass == classOf[Int] || optionClass.getName == "java.lang.Integer"))
-        result = FieldMeta(name, TypeInt, isOption = true, field)
+        result = FieldMeta(name, TypeInt, isOption = true, Some(field))
       else if (memberClazz == classOf[Int])
-        result = FieldMeta(name, TypeInt, isOption = false, field)
+        result = FieldMeta(name, TypeInt, isOption = false, Some(field))
       else if (isOption && (optionClass == classOf[Long] || optionClass.getName == "java.lang.Long"))
-        result = FieldMeta(name, TypeLong, isOption = true, field)
+        result = FieldMeta(name, TypeLong, isOption = true, Some(field))
       else if (memberClazz == classOf[Long])
-        result = FieldMeta(name, TypeLong, isOption = false, field)
+        result = FieldMeta(name, TypeLong, isOption = false, Some(field))
       else if (isOption && (optionClass == classOf[Float] || optionClass.getName == "java.lang.Float"))
-        result = FieldMeta(name, TypeFloat, isOption = true, field)
+        result = FieldMeta(name, TypeFloat, isOption = true, Some(field))
       else if (memberClazz == classOf[Float])
-        result = FieldMeta(name, TypeFloat, isOption = false, field)
+        result = FieldMeta(name, TypeFloat, isOption = false, Some(field))
       else if (isOption && (optionClass == classOf[Double] || optionClass.getName == "java.lang.Double"))
-        result = FieldMeta(name, TypeDouble, isOption = true, field)
+        result = FieldMeta(name, TypeDouble, isOption = true, Some(field))
       else if (memberClazz == classOf[Double])
-        result = FieldMeta(name, TypeDouble, isOption = false, field)
+        result = FieldMeta(name, TypeDouble, isOption = false, Some(field))
       else if (isOption && (optionClass == classOf[Boolean] || optionClass.getName == "java.lang.Boolean"))
-        result = FieldMeta(name, TypeBoolean, isOption = true, field)
+        result = FieldMeta(name, TypeBoolean, isOption = true, Some(field))
       else if (memberClazz == classOf[Boolean])
-        result = FieldMeta(name, TypeBoolean, isOption = false, field)
+        result = FieldMeta(name, TypeBoolean, isOption = false, Some(field))
       else if (isOption && optionClass == classOf[LocalDate])
-        result = FieldMeta(name, TypeLocalDate, isOption = true, field)
+        result = FieldMeta(name, TypeLocalDate, isOption = true, Some(field))
       else if (memberClazz == classOf[LocalDate])
-        result = FieldMeta(name, TypeLocalDate, isOption = false, field)
+        result = FieldMeta(name, TypeLocalDate, isOption = false, Some(field))
       else if (isOption && optionClass == classOf[Date])
-        result = FieldMeta(name, TypeDate, isOption = true, field)
+        result = FieldMeta(name, TypeDate, isOption = true, Some(field))
       else if (memberClazz == classOf[Date])
-        result = FieldMeta(name, TypeDate, isOption = false, field)
+        result = FieldMeta(name, TypeDate, isOption = false, Some(field))
       else if (isOption && optionClass == classOf[Any])
-        result = FieldMeta(name, TypeObject, isOption = true, field)
+        result = FieldMeta(name, TypeObject, isOption = true, Some(field))
       else if (memberClazz == classOf[Any])
-        result = FieldMeta(name, TypeObject, isOption = false, field)
+        result = FieldMeta(name, TypeObject, isOption = false, Some(field))
     }
 
     memberInfoMap.put(name, result)

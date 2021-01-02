@@ -1,8 +1,6 @@
 package com.sfxcode.sapphire.data
 
 import java.lang.reflect.Field
-import java.util.Map
-
 import com.sfxcode.sapphire.data.el.Expressions
 import com.sfxcode.sapphire.data.reflect.FieldMeta._
 import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldRegistry, ReflectionTools}
@@ -10,6 +8,7 @@ import com.typesafe.scalalogging.LazyLogging
 import javafx.beans.property.Property
 import javafx.beans.value.ObservableValue
 
+import java.util
 import scala.collection.{immutable, mutable}
 import scala.jdk.CollectionConverters._
 
@@ -55,8 +54,9 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
           val childBean = createChildForKey(objectKey, value)
           childBean.updateValue(newKey, newValue)
         }
-        else
+        else {
           ReflectionTools.setFieldValue(wrappedData, key, valueToUpdate)
+        }
     }
     updateObservableValue(property, valueToUpdate)
   }
@@ -161,7 +161,11 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
       case _                                   =>
     }
 
-  override def keySet(): java.util.Set[String] = ???
+  override def keySet(): java.util.Set[String] = wrappedData match {
+    case map: scala.collection.Map[String, Any] => map.keySet.asJava
+    case javaMap: java.util.Map[String, Any]    => javaMap.keySet
+    case _                                      => FieldRegistry.memberMap(wrappedData).keySet.asJava
+  }
 
   override def values(): java.util.Collection[Any] =
     wrappedData match {
@@ -170,7 +174,8 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
       case _                                      => FieldRegistry.memberMap(wrappedData).values.asJavaCollection
     }
 
-  override def entrySet(): java.util.Set[Map.Entry[String, Any]] = new java.util.HashSet[Map.Entry[String, Any]]()
+  override def entrySet(): java.util.Set[util.Map.Entry[String, Any]] =
+    new java.util.HashSet[util.Map.Entry[String, Any]]()
 }
 
 object DataAdapter {
