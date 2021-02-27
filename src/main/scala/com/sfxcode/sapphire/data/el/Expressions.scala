@@ -1,9 +1,8 @@
 package com.sfxcode.sapphire.data.el
 
-import java.util.Properties
-
 import jakarta.el._
 
+import java.util.Properties
 import scala.reflect.ClassTag
 
 object Expressions {

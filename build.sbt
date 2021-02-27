@@ -7,7 +7,7 @@ name := "sapphire-data"
 
 organization := "com.sfxcode.sapphire"
 
-crossScalaVersions := Seq("2.13.4", "2.12.12")
+crossScalaVersions := Seq("2.13.5", "2.12.12")
 
 scalaVersion := crossScalaVersions.value.head
 

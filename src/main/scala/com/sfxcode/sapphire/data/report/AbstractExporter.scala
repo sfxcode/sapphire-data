@@ -1,13 +1,13 @@
 package com.sfxcode.sapphire.data.report
 
-import java.net.URL
-import java.util
-
 import better.files.File
 import com.sfxcode.sapphire.data.report.AbstractExporter._
 import com.typesafe.scalalogging.LazyLogging
 import net.sf.jasperreports.engine._
 import net.sf.jasperreports.engine.util.JRLoader
+
+import java.net.URL
+import java.util
 
 case class ReportExportResult(
     completed: Boolean,

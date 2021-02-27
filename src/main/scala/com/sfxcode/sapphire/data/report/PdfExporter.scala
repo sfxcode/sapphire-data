@@ -1,10 +1,11 @@
 package com.sfxcode.sapphire.data.report
 
-import java.net.URL
 import better.files.File
 import net.sf.jasperreports.`export`._
 import net.sf.jasperreports.engine._
 import net.sf.jasperreports.engine.`export`.JRPdfExporter
+
+import java.net.URL
 
 case class PdfExporter(jasperUrl: URL, reportContext: JasperReportsContext = DefaultJasperReportsContext.getInstance())
     extends AbstractExporter(jasperUrl) {

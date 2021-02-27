@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.0.3
+* scala 2.13.5
+* Some dependency Updates
+
 ### 1.0.2
 * jasper-el -> 10.0.0 (javax -> jakarta)
 
