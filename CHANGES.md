@@ -2,6 +2,9 @@
 
 ## Versions
 
+### 1.0.4
+* revert jasper-el jakarta changes (not needed to use jakarta version now)
+
 ### 1.0.3
 * scala 2.13.5
 * Some dependency Updates

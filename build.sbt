@@ -21,7 +21,7 @@ scalacOptions += "-deprecation"
 
 parallelExecution in Test := false
 
-val Json4sVersion     = "3.6.10"
+val Json4sVersion     = "3.6.11"
 val LogbackVersion    = "1.2.3"
 val DeltaspikeVersion = "1.9.4"
 
@@ -44,7 +44,7 @@ lazy val docs = (project in file("docs"))
     ParadoxPlugin.InDirectoryFilter((Compile / paradox / sourceDirectory).value / "includes")
   )
 
-val JavaFXVersion = "16-ea+7"
+val JavaFXVersion = "15.0.1"
 
 val osName = System.getProperty("os.name") match {
   case n if n.startsWith("Linux")   => "linux"
@@ -75,7 +75,7 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.2"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.44"
 
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
