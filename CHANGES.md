@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.0.5
+* BUGFIX Exception in ReflectionTools if name not present
+* JavaFX 16
+
 ### 1.0.4
 * revert jasper-el jakarta changes (not needed to use jakarta version now)
 
