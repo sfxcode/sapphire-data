@@ -36,7 +36,16 @@ object ReflectionTools extends LazyLogging {
       }
     }
     else {
-      logger.debug("can not update %s for field %s - Not Found".format(value, name))
+      try {
+        val field = target.getClass.getDeclaredField(name)
+        field.setAccessible(true)
+        field.set(target, value)
+        field
+      }
+      catch {
+        case exc: Exception =>
+          logger.error("can not update %s for field %s - %s".format(value, name, exc.getMessage))
+      }
     }
 
   }

@@ -2,6 +2,9 @@
 
 ## Versions
 
+### 1.0.7
+* DataAdapter supports now update with object value
+
 ### 1.0.6
 * Bugfix for getValue and deeper hirachy than one
 * Changes in childs now detected for deeper hirachy level

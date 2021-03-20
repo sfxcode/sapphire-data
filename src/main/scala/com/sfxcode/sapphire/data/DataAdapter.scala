@@ -70,6 +70,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
         }
         else {
           ReflectionTools.setFieldValue(wrappedData, key, valueToUpdate)
+          childrenMap.remove(key)
         }
     }
     updateObservableValue(property, valueToUpdate)
