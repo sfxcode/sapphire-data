@@ -35,7 +35,9 @@ class TestClass(
 
 }
 
-case class ChildBean(childName: String = "childName") {
+case class Address(street: String = "street", postal: String = "12345")
+
+case class ChildBean(childName: String = "childName", address: Address = Address()) {
   def fullChildName(): String = "[child] %s".format(childName)
 }
 

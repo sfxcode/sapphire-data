@@ -1,13 +1,13 @@
 package com.sfxcode.sapphire.data
 
-import java.lang.reflect.Field
-import com.sfxcode.sapphire.data.el.Expressions
+import com.sfxcode.sapphire.data.el.{Expressions, ObjectExpressionHelper}
 import com.sfxcode.sapphire.data.reflect.FieldMeta._
 import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldRegistry, ReflectionTools}
 import com.typesafe.scalalogging.LazyLogging
 import javafx.beans.property.Property
 import javafx.beans.value.ObservableValue
 
+import java.lang.reflect.Field
 import java.util
 import scala.collection.{immutable, mutable}
 import scala.jdk.CollectionConverters._
@@ -30,11 +30,25 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
     else
       getValue(key)
 
+  private def handleRelations(key: String): Boolean =
+    key.contains(".") && !key.contains(ObjectExpressionHelper.ExpressionPrefix) &&
+    !key.contains(ObjectExpressionHelper.FxmlExpressionPrefix)
+
   def getValue(key: String): Any =
     wrappedData match {
       case map: scala.collection.Map[String, Any] => map(key)
       case javaMap: java.util.Map[String, Any]    => javaMap.get(key)
-      case _                                      => Expressions.evaluateExpressionOnObject(wrappedData, key).get
+      case _ =>
+        if (handleRelations(key)) {
+          val objectKey = key.substring(0, key.indexOf("."))
+          val newKey    = key.substring(key.indexOf(".") + 1)
+          val value     = getValue(objectKey)
+          val childBean = createChildForKey(objectKey, value)
+          childBean.getValue(newKey)
+        }
+        else {
+          Expressions.evaluateExpressionOnObject(wrappedData, key).get
+        }
     }
 
   def updateValue(key: String, newValue: Any): Unit = {
@@ -47,7 +61,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
       case map: mutable.Map[String, Any]       => map.put(key, valueToUpdate)
       case javaMap: java.util.Map[String, Any] => javaMap.put(key, valueToUpdate)
       case _ =>
-        if (key.contains(".")) {
+        if (handleRelations(key)) {
           val objectKey = key.substring(0, key.indexOf("."))
           val newKey    = key.substring(key.indexOf(".") + 1)
           val value     = getValue(objectKey)
@@ -78,7 +92,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
     }
 
     expressionMap.keySet.asScala.foreach(k => updateObservableValue(expressionMap.get(k), getValue(k)))
-    parentBean.foreach(bean => bean.childHasChanged(observable, oldValue, newValue))
+    parentDataAdapter.foreach(bean => bean.childHasChanged(observable, oldValue, newValue))
   }
 
   def childHasChanged(observable: ObservableValue[_], oldValue: Any, newValue: Any): Unit =
@@ -93,9 +107,14 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
       else
         changeManagementMap.put(key, oldValue)
       hasChangesProperty.setValue(hasManagedChanges)
-      if (parentBean.isDefined)
-        parentBean.get.hasChangesProperty.setValue(parentBean.get.hasManagedChanges || hasManagedChanges)
+      updateParentChangesProperty()
 
+    }
+
+  def updateParentChangesProperty(): Unit =
+    parentDataAdapter.foreach { adapter =>
+      adapter.hasChangesProperty.setValue(parentDataAdapter.get.hasManagedChanges || hasManagedChanges)
+      adapter.updateParentChangesProperty()
     }
 
   def revert(): Unit =

@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.0.6
+* Bugfix for getValue and deeper hirachy than one
+* Changes in childs now detected for deeper hirachy level
+
 ### 1.0.5
 * BUGFIX Exception in ReflectionTools if name not present
 * JavaFX 16

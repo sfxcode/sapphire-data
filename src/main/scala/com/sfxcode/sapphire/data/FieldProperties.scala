@@ -19,11 +19,11 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
   lazy val expressionMap: ObservableMap[String, Property[_]] = FXCollections.observableHashMap[String, Property[_]]()
   lazy val propertyMap: ObservableMap[String, Property[_]]   = FXCollections.observableHashMap[String, Property[_]]()
 
-  val childrenMap                             = new mutable.HashMap[String, DataAdapter[AnyRef]]
-  val EmptyMemberInfo: FieldMeta              = FieldMeta("name_ignored")
-  val memberInfoMap: Map[String, FieldMeta]   = typeHints.map(info => (info.name, info)).toMap
-  var parentBean: Option[DataAdapter[AnyRef]] = None
-  var trackChanges                            = true
+  val childrenMap                                    = new mutable.HashMap[String, DataAdapter[AnyRef]]
+  val EmptyMemberInfo: FieldMeta                     = FieldMeta("name_ignored")
+  val memberInfoMap: Map[String, FieldMeta]          = typeHints.map(info => (info.name, info)).toMap
+  var parentDataAdapter: Option[DataAdapter[AnyRef]] = None
+  var trackChanges                                   = true
 
   def data: AnyRef
 
@@ -182,10 +182,10 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
   protected def createChildForKey(key: String, value: Any): DataAdapter[AnyRef] = {
 
     if (!childrenMap.contains(key)) {
-      val newBean = DataAdapter(value.asInstanceOf[AnyRef])
-      newBean.parentBean = Some(this.asInstanceOf[DataAdapter[AnyRef]])
-      newBean.trackChanges = trackChanges
-      childrenMap.+=(key -> newBean)
+      val adapter = DataAdapter(value.asInstanceOf[AnyRef])
+      adapter.parentDataAdapter = Some(this.asInstanceOf[DataAdapter[AnyRef]])
+      adapter.trackChanges = trackChanges
+      childrenMap.+=(key -> adapter)
     }
     childrenMap(key)
   }
