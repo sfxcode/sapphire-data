@@ -10,47 +10,53 @@ class DataAdapterChildrenSpec extends Specification with LazyLogging {
   "DataAdapter" should {
 
     "get child values" in {
-      val testBean = DataAdapter[ParentBean](ParentBean())
+      val adapter = DataAdapter[ParentBean](ParentBean())
 
-      testBean.getValue("child.childName") must be equalTo "childName"
+      adapter.getValue("child.childName") must be equalTo "childName"
 
-      testBean.getValue("child.address").toString must be equalTo "Address(oldStreet,12345)"
+      adapter.getValue("child.address").toString must be equalTo "Address(oldStreet,12345)"
 
-      testBean.getValue("child.address.street").toString must be equalTo "oldStreet"
+      adapter.getValue("child.address.street").toString must be equalTo "oldStreet"
 
     }
 
     "update child values" in {
-      val testBean = DataAdapter[ParentBean](ParentBean())
+      val adapter = DataAdapter[ParentBean](ParentBean())
 
-      testBean.getValue("child.address.street").toString must be equalTo "oldStreet"
+      adapter.getValue("child.address.street").toString must be equalTo "oldStreet"
 
-      testBean.updateValue("child.address.street", "newStreet")
+      adapter.updateValue("child.address.street", "newStreet")
 
-      testBean.getValue("child.address.street").toString must be equalTo "newStreet"
+      adapter.getValue("child.address.street").toString must be equalTo "newStreet"
 
-      testBean.hasChanges must beTrue
+      adapter.hasChanges must beTrue
 
     }
 
     "update child values with case class" in {
-      val testBean = DataAdapter[ParentBean](ParentBean())
+      val adapter = DataAdapter[ParentBean](ParentBean())
 
-      testBean.getValue("child.address.street").toString must be equalTo "oldStreet"
+      adapter.getValue("child.address.street").toString must be equalTo "oldStreet"
 
-      testBean.updateValue("child.address", Address("newStreet"))
+      adapter.updateValue("child.address", Address("newStreet"))
 
-      val street = testBean.wrappedData.child.address.street
+      val street = adapter.wrappedData.child.address.street
 
       street must be equalTo "newStreet"
 
-      testBean.getValue("child.address.street").toString must be equalTo "newStreet"
+      val address = adapter.getValue("child.address").asInstanceOf[Address]
 
-      testBean.hasChanges must beTrue
+      address.street must be equalTo "newStreet"
 
-      testBean.updateValue("child", ChildBean("name2", Address("street2")))
-      testBean.getValue("child.address.street").toString must be equalTo "street2"
-      testBean.getValue("child.childName").toString must be equalTo "name2"
+      adapter.getValue("child.address.street").toString must be equalTo "newStreet"
+
+      adapter.hasChanges must beTrue
+
+      adapter.updateValue("child", ChildBean("name2", Address("street2")))
+      adapter.getValue("child.address.street").toString must be equalTo "street2"
+      adapter.getValue("child.childName").toString must be equalTo "name2"
+
+      adapter.hasChanges must beTrue
 
     }
   }
