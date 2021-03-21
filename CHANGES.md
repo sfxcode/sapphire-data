@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.1.0
+* added ValueHelper to DataAdapter
+* DataAdapter: getValue returns null if exception occurs (error is logged as warning)
+
 ### 1.0.7
 * DataAdapter supports now update with object value
 

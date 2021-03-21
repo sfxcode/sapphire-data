@@ -1,9 +1,10 @@
-package com.sfxcode.sapphire.data
+package com.sfxcode.sapphire.data.wrapper
 
-import com.sfxcode.sapphire.data.FieldProperties.defaultDateConverter
 import com.sfxcode.sapphire.data.el.ObjectExpressionHelper
 import com.sfxcode.sapphire.data.reflect.PropertyType._
 import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldMetaRegistry}
+import com.sfxcode.sapphire.data.wrapper.FieldProperties.defaultDateConverter
+import com.sfxcode.sapphire.data.{Configuration, DataAdapter}
 import javafx.beans.property._
 import javafx.beans.value.ChangeListener
 import javafx.collections.{FXCollections, ObservableMap}

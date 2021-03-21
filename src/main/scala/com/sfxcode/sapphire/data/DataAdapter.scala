@@ -3,6 +3,7 @@ package com.sfxcode.sapphire.data
 import com.sfxcode.sapphire.data.el.{Expressions, ObjectExpressionHelper}
 import com.sfxcode.sapphire.data.reflect.FieldMeta._
 import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldRegistry, ReflectionTools}
+import com.sfxcode.sapphire.data.wrapper.{FieldProperties, ValueHelper}
 import com.typesafe.scalalogging.LazyLogging
 import javafx.beans.property.Property
 import javafx.beans.value.ObservableValue
@@ -14,6 +15,7 @@ import scala.jdk.CollectionConverters._
 
 class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = EmptyTypeHints)
     extends FieldProperties(typeHints)
+    with ValueHelper
     with java.util.Map[String, Any]
     with LazyLogging {
 
@@ -47,9 +49,17 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
           childBean.getValue(newKey)
         }
         else {
-          Expressions.evaluateExpressionOnObject(wrappedData, key).get
+          try getValueForExpression(key).get
+          catch {
+            case e: Exception =>
+              logger.warn(e.getMessage, e)
+              null
+          }
         }
     }
+
+  def getValueForExpression[T <: Any](expression: String): Option[T] =
+    Expressions.evaluateExpressionOnObject[T](wrappedData, expression)
 
   def updateValue(key: String, newValue: Any): Unit = {
     var valueToUpdate = newValue
