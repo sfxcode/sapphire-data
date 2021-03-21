@@ -49,8 +49,10 @@ trait ValueHelper extends LazyLogging {
       case i: Int    => Some(i)
       case n: Number => Some(n.intValue())
       case s: String =>
-        val option = s.toIntOption
-        if (option.isDefined) option else defaultValue
+        try Some(s.toInt)
+        catch {
+          case _: Exception => defaultValue
+        }
       case _ => defaultValue
     }
 
@@ -59,8 +61,10 @@ trait ValueHelper extends LazyLogging {
       case l: Long   => Some(l)
       case n: Number => Some(n.longValue())
       case s: String =>
-        val option = s.toLongOption
-        if (option.isDefined) option else defaultValue
+        try Some(s.toLong)
+        catch {
+          case _: Exception => defaultValue
+        }
       case _ => defaultValue
     }
 
@@ -69,8 +73,10 @@ trait ValueHelper extends LazyLogging {
       case f: Float  => Some(f)
       case n: Number => Some(n.floatValue())
       case s: String =>
-        val option = s.toFloatOption
-        if (option.isDefined) option else defaultValue
+        try Some(s.toFloat)
+        catch {
+          case _: Exception => defaultValue
+        }
       case _ => defaultValue
     }
 
@@ -79,8 +85,10 @@ trait ValueHelper extends LazyLogging {
       case d: Double => Some(d)
       case n: Number => Some(n.doubleValue())
       case s: String =>
-        val option = s.toDoubleOption
-        if (option.isDefined) option else defaultValue
+        try Some(s.toDouble)
+        catch {
+          case _: Exception => defaultValue
+        }
       case _ => defaultValue
     }
 
