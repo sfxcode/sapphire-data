@@ -29,9 +29,9 @@ Apache 2 License.
 
 ## Technology Stack
 
-### Java  JDK 11/12
+### Java  JDK 11
 
-Sapphire runs agains the latest JDK 11/12 version.
+Sapphire runs agains the latest JDK 11+ versions.
 
 ### JavaFX
 

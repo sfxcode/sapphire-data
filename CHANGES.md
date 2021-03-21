@@ -3,8 +3,9 @@
 ## Versions
 
 ### 1.1.0
-* added ValueHelper to DataAdapter
-* DataAdapter: getValue returns null if exception occurs (error is logged as warning)
+* DataAdapter: getValue returns null if exception occurs (error logged as warning)
+* Added ValueHelper to DataAdapter
+* Refactored: FieldProperties to package com.sfxcode.sapphire.data.wrapper
 
 ### 1.0.7
 * DataAdapter supports now update with object value
