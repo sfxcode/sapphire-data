@@ -7,7 +7,7 @@ name := "sapphire-data"
 
 organization := "com.sfxcode.sapphire"
 
-crossScalaVersions := Seq("2.13.5", "2.12.12")
+crossScalaVersions := Seq("2.12.13", "2.13.5")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -67,9 +67,9 @@ libraryDependencies ++= Seq("base").map(m => "org.openjfx" % s"javafx-$m" % Java
 
 // Environment
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.4.2"
+libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.4.3"
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.3"
 
 libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
