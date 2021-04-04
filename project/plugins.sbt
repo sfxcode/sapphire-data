@@ -1,4 +1,4 @@
-addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.5.3")
+addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.5.4")
 
 addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.7")
 
