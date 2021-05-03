@@ -1,12 +1,10 @@
-addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.5.4")
-
 addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.7")
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
 
 addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.3")
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.7.2")
 
 addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.6.1")
 
@@ -20,7 +18,7 @@ addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.2")
 
 addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.27")
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.5.2")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.5.3")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
 

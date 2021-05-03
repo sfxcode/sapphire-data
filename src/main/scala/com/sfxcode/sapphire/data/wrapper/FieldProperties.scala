@@ -128,28 +128,73 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
       }
     }
 
-  def updateObservableValue(property: Property[_], value: Any): Unit =
+  protected def updateObservableValue(property: Property[_], value: Any): Unit =
     property match {
-      case property: StringProperty =>
-        value match {
-          case s: String             => property.set(s)
-          case d: java.util.Date     => property.set(defaultDateConverter.toString(d))
-          case c: java.util.Calendar => property.set(defaultDateConverter.toString(c.getTime))
-          case c: javax.xml.datatype.XMLGregorianCalendar =>
-            property.set(defaultDateConverter.toString(c.toGregorianCalendar.getTime))
-          case _ =>
-            if (value != null)
-              property.set(value.toString)
-            else
-              property.set(null)
-        }
-      case i: IntegerProperty     => i.set(value.asInstanceOf[Integer])
-      case l: LongProperty        => l.set(value.asInstanceOf[Long])
-      case f: FloatProperty       => f.set(value.asInstanceOf[Float])
-      case d: DoubleProperty      => d.set(value.asInstanceOf[Double])
-      case b: BooleanProperty     => b.set(value.asInstanceOf[Boolean])
+      case s: StringProperty => updateStringProperty(s, value)
+
+      case i: IntegerProperty     => updateIntProperty(i, value)
+      case l: LongProperty        => updateLongProperty(l, value)
+      case f: FloatProperty       => updateFloatProperty(f, value)
+      case d: DoubleProperty      => updateDoubleProperty(d, value)
+      case b: BooleanProperty     => updateBooleanProperty(b, value)
       case o: ObjectProperty[Any] => o.set(value)
       case _                      =>
+    }
+
+  protected def updateStringProperty(property: StringProperty, value: Any): Unit =
+    value match {
+      case s: String             => property.set(s)
+      case d: java.util.Date     => property.set(defaultDateConverter.toString(d))
+      case c: java.util.Calendar => property.set(defaultDateConverter.toString(c.getTime))
+      case c: javax.xml.datatype.XMLGregorianCalendar =>
+        property.set(defaultDateConverter.toString(c.toGregorianCalendar.getTime))
+      case _ =>
+        if (value != null) {
+          property.set(value.toString)
+        }
+        else {
+          property.set(null)
+        }
+    }
+
+  protected def updateIntProperty(property: IntegerProperty, value: Any): Unit =
+    value match {
+      case n: Number => property.set(n.intValue())
+      case s: String if s.nonEmpty =>
+        property.set(value.toString.toInt)
+      case _ =>
+    }
+
+  protected def updateLongProperty(property: LongProperty, value: Any): Unit =
+    value match {
+      case n: Number => property.set(n.longValue())
+      case s: String if s.nonEmpty =>
+        property.set(value.toString.toLong)
+      case _ =>
+    }
+
+  protected def updateDoubleProperty(property: DoubleProperty, value: Any): Unit =
+    value match {
+      case n: Number => property.set(n.doubleValue())
+      case s: String if s.nonEmpty =>
+        property.set(value.toString.toDouble)
+      case _ =>
+    }
+
+  protected def updateFloatProperty(property: FloatProperty, value: Any): Unit =
+    value match {
+      case n: Number => property.set(n.floatValue())
+      case s: String if s.nonEmpty =>
+        property.set(value.toString.toFloat)
+      case _ =>
+    }
+
+  protected def updateBooleanProperty(property: BooleanProperty, value: Any): Unit =
+    value match {
+      case b: Boolean => property.set(b)
+      case s: String if s.nonEmpty =>
+        property.set(java.lang.Boolean.valueOf(s))
+      case _ =>
     }
 
   def hasManagedChanges: lang.Boolean = {

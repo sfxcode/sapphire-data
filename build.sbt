@@ -15,15 +15,12 @@ compileOrder := CompileOrder.JavaThenScala
 
 lazy val sapphire_data_root = Project(id = "sapphire-data", base = file("."))
 
-javacOptions in test += "-Dorg.apache.deltaspike.ProjectStage=Test"
-
 scalacOptions += "-deprecation"
 
-parallelExecution in Test := false
+test / parallelExecution := false
 
-val Json4sVersion     = "3.6.11"
-val LogbackVersion    = "1.2.3"
-val DeltaspikeVersion = "1.9.4"
+val Json4sVersion  = "3.6.11"
+val LogbackVersion = "1.2.3"
 
 lazy val docs = (project in file("docs"))
   .enablePlugins(ParadoxSitePlugin)
@@ -55,11 +52,11 @@ val osName = System.getProperty("os.name") match {
 
 // Test
 
-libraryDependencies += "org.specs2" %% "specs2-core" % "4.10.6" % Test
+libraryDependencies += "org.specs2" %% "specs2-core" % "4.11.0" % Test
 
 libraryDependencies += "org.json4s" %% "json4s-native" % Json4sVersion % Test
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test
+libraryDependencies += "ch.qos.logback" % "logback-classic" % LogbackVersion % Test
 
 // Compile
 
@@ -75,7 +72,7 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.44"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.45"
 
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"

@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.1.1
+* DataAdapter: updateValues (Map) added
+* Data Adapter: autoconversion for update value
+
 ### 1.1.0
 * DataAdapter: getValue returns null if exception occurs (error logged as warning)
 * Added ValueHelper to DataAdapter

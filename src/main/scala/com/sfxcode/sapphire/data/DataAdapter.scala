@@ -61,6 +61,11 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   def getValueForExpression[T <: Any](expression: String): Option[T] =
     Expressions.evaluateExpressionOnObject[T](wrappedData, expression)
 
+  def updateValues(map: Map[String, Any]): Unit =
+    map.keySet.foreach { key =>
+      updateValue(key, map.get(key).orNull)
+    }
+
   def updateValue(key: String, newValue: Any): Unit = {
     var valueToUpdate = newValue
     val property      = propertyMap.asScala.getOrElse(key, getProperty(key))
@@ -210,6 +215,6 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
 
 object DataAdapter {
 
-  def apply[T <: AnyRef](bean: T, typeHints: List[FieldMeta] = List[FieldMeta]()): DataAdapter[T] =
+  def apply[T <: AnyRef](bean: T, typeHints: List[FieldMeta] = EmptyTypeHints): DataAdapter[T] =
     new DataAdapter[T](bean, typeHints)
 }

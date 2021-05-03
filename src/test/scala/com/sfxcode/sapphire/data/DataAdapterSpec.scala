@@ -211,6 +211,28 @@ class DataAdapterSpec extends Specification with LazyLogging {
 
       testBean.hasChanges must beFalse
     }
+
+    "update value with conversion" in {
+
+      val testBean = DataAdapter[TestBean](TestBean())
+      testBean.updateValue("age", "2")
+      testBean.getIntValue("age") must beSome(2)
+      testBean.updateValue("age", 3L)
+      testBean.getIntValue("age") must beSome(3)
+      testBean.updateValue("age", 4.0)
+      testBean.getIntValue("age") must beSome(4)
+      testBean.updateValue("age", 5.0f)
+      testBean.getIntValue("age") must beSome(5)
+
+    }
+
+    "update values" in {
+
+      val testBean = DataAdapter[TestBean](TestBean())
+      testBean.updateValues(Map("age" -> 2))
+      testBean.getIntValue("age") must beSome(2)
+
+    }
   }
 
 }
