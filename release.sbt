@@ -6,8 +6,6 @@ organization := "com.sfxcode.sapphire"
 ThisBuild / organization := "com.sfxcode.sapphire"
 ThisBuild / organizationHomepage := Some(url("https://github.com/sfxcode"))
 
-releaseCrossBuild := true
-
 publishMavenStyle := true
 
 homepage := Some(url("https://github.com/sfxcode/sapphire-data"))
