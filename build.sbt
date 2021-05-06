@@ -1,7 +1,5 @@
 name := "sapphire-data"
 
-organization := "com.sfxcode.sapphire"
-
 crossScalaVersions := Seq("2.13.5", "2.12.13")
 
 scalaVersion := crossScalaVersions.value.head
@@ -84,42 +82,6 @@ buildInfoPackage := "com.sfxcode.sapphire.data"
 
 buildInfoOptions += BuildInfoOption.BuildTime
 
-// publish
-
-releaseCrossBuild := true
-
-publishMavenStyle := true
-
-homepage := Some(url("https://github.com/sfxcode/sapphire-data"))
-
-scmInfo := Some(
-  ScmInfo(
-    url("https://github.com/sfxcode/sapphire-data"),
-    "scm:https://github.com/sfxcode/sapphire-data.git"
-  )
-)
-
-developers := List(
-  Developer(
-    id = "sfxcode",
-    name = "Tom Lamers",
-    email = "tom@sfxcode.com",
-    url = url("https://github.com/sfxcode")
-  )
-)
-
-licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
-
-// add sonatype repository settings
-// snapshot versions publish to sonatype snapshot repository
-// other versions publish to sonatype staging repository
-publishTo := Some(
-  if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
-  else
-    Opts.resolver.sonatypeStaging
-)
-
 packageOptions += {
   Package.ManifestAttributes(
     "Created-By"               -> "Simple Build Tool",
@@ -134,21 +96,3 @@ packageOptions += {
     "Implementation-Vendor"    -> organization.value
   )
 }
-
-// realease with sbt-release plugin
-import ReleaseTransformations._
-releaseCrossBuild := true
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,                        // check that there are no SNAPSHOT dependencies
-  inquireVersions,                                  // ask user to enter the current and next verion
-  runClean,                                         // clean
-  runTest,                                          // run tests
-  setReleaseVersion,                                // set release version in version.sbt
-  commitReleaseVersion,                             // commit the release version
-  tagRelease,                                       // create git tag
-  releaseStepCommandAndRemaining("+publishSigned"), // run +publishSigned command to sonatype stage release
-  setNextVersion,                                   // set next version in version.sbt
-  commitNextVersion,                                // commint next version
-  releaseStepCommand("sonatypeRelease"),            // run sonatypeRelease and publish to maven central
-  pushChanges                                       // push changes to git
-)

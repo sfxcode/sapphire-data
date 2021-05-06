@@ -2,6 +2,9 @@
 
 ## Versions
 
+### 1.1.2
+* moved from bintray to sonatype
+
 ### 1.1.1
 * DataAdapter: updateValues (Map) added
 * Data Adapter: autoconversion for update value
