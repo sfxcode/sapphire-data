@@ -6,11 +6,7 @@ addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.3")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.7.2")
 
-addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.6.1")
-
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.10.0")
-
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-license-report" % "1.2.0")
 
@@ -20,7 +16,12 @@ addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.27")
 
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.5.3")
 
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")
+// Release
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.7")
+
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.1.1")
+
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 
 // Paradox handling
 

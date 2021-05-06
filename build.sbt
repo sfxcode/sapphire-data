@@ -1,15 +1,12 @@
-import sbt.url
-
-import scala.xml.transform.{RewriteRule, RuleTransformer}
-import scala.xml.{Comment, Elem, Node => XmlNode, NodeSeq => XmlNodeSeq}
-
 name := "sapphire-data"
 
 organization := "com.sfxcode.sapphire"
 
-crossScalaVersions := Seq("2.12.13", "2.13.5")
+crossScalaVersions := Seq("2.13.5", "2.12.13")
 
 scalaVersion := crossScalaVersions.value.head
+
+ThisBuild / versionScheme := Some("early-semver")
 
 compileOrder := CompileOrder.JavaThenScala
 
@@ -27,7 +24,7 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(ParadoxMaterialThemePlugin)
   .enablePlugins(GhpagesPlugin)
   .settings(
-    scalaVersion := "2.13.4",
+    scalaVersion := "2.13.5",
     name := "sapphire-data-docs",
     publish / skip := true,
     ghpagesNoJekyll := true,
@@ -81,8 +78,6 @@ libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.16.0" % Pro
 
 libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1" % Provided
 
-licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
-
 enablePlugins(BuildInfoPlugin)
 
 buildInfoPackage := "com.sfxcode.sapphire.data"
@@ -91,29 +86,7 @@ buildInfoOptions += BuildInfoOption.BuildTime
 
 // publish
 
-// Use `pomPostProcess` to remove dependencies marked as "provided" from publishing in POM
-// This is to avoid dependency on wrong OS version JavaFX libraries [Issue #289]
-// See also [https://stackoverflow.com/questions/27835740/sbt-exclude-certain-dependency-only-during-publish]
-
-pomPostProcess := { node: XmlNode =>
-  new RuleTransformer(new RewriteRule {
-    override def transform(node: XmlNode): XmlNodeSeq =
-      node match {
-        case e: Elem
-            if e.label == "dependency" && e.child.exists(c => c.label == "scope" && c.text == "provided")
-              && e.child.exists(c => c.label == "groupId" && c.text == "org.openjfx") =>
-          val organization = e.child.filter(_.label == "groupId").flatMap(_.text).mkString
-          val artifact     = e.child.filter(_.label == "artifactId").flatMap(_.text).mkString
-          val version      = e.child.filter(_.label == "version").flatMap(_.text).mkString
-          Comment(s"provided dependency $organization#$artifact;$version has been omitted")
-        case _ => node
-      }
-  }).transform(node).head
-}
-
 releaseCrossBuild := true
-
-bintrayReleaseOnPublish in ThisBuild := true
 
 publishMavenStyle := true
 
@@ -135,6 +108,18 @@ developers := List(
   )
 )
 
+licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+
+// add sonatype repository settings
+// snapshot versions publish to sonatype snapshot repository
+// other versions publish to sonatype staging repository
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
+
 packageOptions += {
   Package.ManifestAttributes(
     "Created-By"               -> "Simple Build Tool",
@@ -149,3 +134,21 @@ packageOptions += {
     "Implementation-Vendor"    -> organization.value
   )
 }
+
+// realease with sbt-release plugin
+import ReleaseTransformations._
+releaseCrossBuild := true
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,                        // check that there are no SNAPSHOT dependencies
+  inquireVersions,                                  // ask user to enter the current and next verion
+  runClean,                                         // clean
+  runTest,                                          // run tests
+  setReleaseVersion,                                // set release version in version.sbt
+  commitReleaseVersion,                             // commit the release version
+  tagRelease,                                       // create git tag
+  releaseStepCommandAndRemaining("+publishSigned"), // run +publishSigned command to sonatype stage release
+  setNextVersion,                                   // set next version in version.sbt
+  commitNextVersion,                                // commint next version
+  releaseStepCommand("sonatypeRelease"),            // run sonatypeRelease and publish to maven central
+  pushChanges                                       // push changes to git
+)
