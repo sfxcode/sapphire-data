@@ -1,10 +1,7 @@
 import sbt.url
-// publish
 
 organization := "com.sfxcode.sapphire"
-
-ThisBuild / organization := "com.sfxcode.sapphire"
-ThisBuild / organizationHomepage := Some(url("https://github.com/sfxcode"))
+organizationHomepage := Some(url("https://github.com/sfxcode"))
 
 publishMavenStyle := true
 
@@ -33,7 +30,22 @@ licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html
 // other versions publish to sonatype staging repository
 publishTo := sonatypePublishToBundle.value
 
-import ReleaseTransformations._
+packageOptions += {
+  Package.ManifestAttributes(
+    "Created-By"               -> "Simple Build Tool",
+    "Built-By"                 -> "sfxcode",
+    "Build-Jdk"                -> System.getProperty("java.version"),
+    "Specification-Title"      -> name.value,
+    "Specification-Version"    -> version.value,
+    "Specification-Vendor"     -> organization.value,
+    "Implementation-Title"     -> name.value,
+    "Implementation-Version"   -> version.value,
+    "Implementation-Vendor-Id" -> organization.value,
+    "Implementation-Vendor"    -> organization.value
+  )
+}
+
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
 releaseCrossBuild := true // true if you cross-build the project for multiple Scala versions
 releaseProcess := Seq[ReleaseStep](
