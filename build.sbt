@@ -72,7 +72,7 @@ libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.45"
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
 
-libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.16.0" % Provided
+libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.17.0" % Provided
 
 libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1" % Provided
 
