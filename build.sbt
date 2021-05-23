@@ -47,7 +47,7 @@ val osName = System.getProperty("os.name") match {
 
 // Test
 
-libraryDependencies += "org.specs2" %% "specs2-core" % "4.11.0" % Test
+libraryDependencies += "org.specs2" %% "specs2-core" % "4.12.0" % Test
 
 libraryDependencies += "org.json4s" %% "json4s-native" % Json4sVersion % Test
 
