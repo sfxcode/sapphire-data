@@ -14,7 +14,7 @@ scalacOptions += "-deprecation"
 
 test / parallelExecution := false
 
-val Json4sVersion  = "3.6.11"
+val Json4sVersion  = "4.0.0"
 val LogbackVersion = "1.2.3"
 
 lazy val docs = (project in file("docs"))
