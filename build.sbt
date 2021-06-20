@@ -61,7 +61,7 @@ libraryDependencies ++= Seq("base").map(m => "org.openjfx" % s"javafx-$m" % Java
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.4.3"
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.3"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 
 libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
