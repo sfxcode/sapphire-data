@@ -1,27 +1,19 @@
 package com.sfxcode.sapphire.data
 
-import com.typesafe.scalalogging.LazyLogging
-import org.specs2.mutable._
+class DataAdapterValueHelperSpec extends munit.FunSuite {
 
-class DataAdapterValueHelperSpec extends Specification with LazyLogging {
-
-  sequential
   val adapter = DataAdapter[TestBean](TestBean())
 
-  "ValueHelper" should {
+  test("getValues from adapter") {
 
-    "get getValues " in {
+    assertEquals(adapter.getIntValue("age"), Some(42))
+    assertEquals(adapter.getLongValue("age"), Some(42L))
+    assertEquals(adapter.getFloatValue("age"), Some(42.0f))
+    assertEquals(adapter.getDoubleValue("age"), Some(42.0))
+    assertEquals(adapter.getStringValue("age"), Some("42"))
 
-      adapter.getIntValue("age") must beSome(42)
-      adapter.getLongValue("age") must beSome(42L)
-      adapter.getFloatValue("age") must beSome(42.0f)
-      adapter.getDoubleValue("age") must beSome(42.0)
-      adapter.getStringValue("age") must beSome("42")
-
-      adapter.getLongValue("unknown") must beNone
-      adapter.getLongValue("unknown", Some(42)) must beSome(42L)
-
-    }
+    assertEquals(adapter.getLongValue("unknown"), None)
+    assertEquals(adapter.getLongValue("unknown", Some(42)), Some(42L))
   }
 
 }

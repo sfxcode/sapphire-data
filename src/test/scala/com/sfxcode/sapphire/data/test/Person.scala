@@ -4,8 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import com.sfxcode.sapphire.data.DataAdapter
-import org.json4s.DefaultFormats
-import org.json4s.native.Serialization._
+import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 
 import scala.io.Source
 
@@ -22,7 +21,6 @@ case class Person(
   phone: String,
   address: String,
   about: String,
-  registered: Date,
   tags: List[String],
   friends: List[Friend],
   greeting: String,
@@ -34,13 +32,10 @@ case class Friend(id: Long, name: String) {
 
 object PersonDatabase {
 
-  implicit val formats = new DefaultFormats {
-    override def dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-  }
+  private val jsonString: String = fromJson("/test_data.json")
+  val personen: List[Person] = decode[List[Person]](jsonString).getOrElse(List())
 
-  val personen: List[Person] = read[List[Person]](fromJson("/test_data.json"))
-
-  val friends: List[Friend] = personen(0).friends
+  val friends: List[Friend] = personen.head.friends
 
   def fromJson(name: String): String = {
     val is = getClass.getResourceAsStream(name)

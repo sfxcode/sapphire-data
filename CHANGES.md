@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.2.0
+* Scala 3 Support
+* moved from specs2 to munit
+
 ### 1.1.2
 * moved from bintray to sonatype
 

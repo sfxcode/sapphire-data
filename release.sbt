@@ -48,6 +48,7 @@ packageOptions += {
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
 releaseCrossBuild := true // true if you cross-build the project for multiple Scala versions
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,

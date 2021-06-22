@@ -1,6 +1,6 @@
 package com.sfxcode.sapphire.data.reflect
 
-import java.lang.reflect.ParameterizedType
+import java.lang.reflect.{Field, ParameterizedType}
 import java.time.LocalDate
 import java.util.Date
 import scala.collection.mutable
@@ -36,19 +36,7 @@ object FieldMetaRegistry {
       val isOption              = memberClazz.getName.contains("scala.Option")
 
       if (isOption) {
-        val typeClass = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()(0)
-        if (typeClass == classOf[Object]) {
-          field.setAccessible(true)
-          val testValue = field.get(target)
-          if (testValue != null && testValue.asInstanceOf[Option[_]].isDefined) {
-            val optionValue = testValue.asInstanceOf[Option[_]].get
-            optionClass = optionValue.getClass
-          }
-        }
-        else
-          optionClass = typeClass.asInstanceOf[Class[_]]
-
-        println(optionClass)
+        optionClass = gusssOptionClass(field, target)
       }
 
       if (isOption && optionClass == classOf[String])
@@ -90,6 +78,17 @@ object FieldMetaRegistry {
     }
 
     memberInfoMap.put(name, result)
+    result
+  }
+
+  private def gusssOptionClass(field: Field, target: AnyRef): Class[_] = {
+    var result: Class[_] = classOf[Any]
+    field.setAccessible(true)
+    val testValue = field.get(target)
+    if (testValue != null && testValue.asInstanceOf[Option[_]].isDefined) {
+      val optionValue = testValue.asInstanceOf[Option[_]].get
+      result = optionValue.getClass
+    }
     result
   }
 
