@@ -16,7 +16,7 @@ test / parallelExecution := false
 
 val LogbackVersion = "1.2.3"
 
-val JavaFXVersion = "16"
+val JavaFXVersion = "18-ea+1"
 
 val osName = System.getProperty("os.name") match {
   case n if n.startsWith("Linux")   => "linux"
