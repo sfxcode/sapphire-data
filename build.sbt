@@ -14,7 +14,7 @@ scalacOptions += "-deprecation"
 
 test / parallelExecution := false
 
-val LogbackVersion = "1.2.3"
+val LogbackVersion = "1.2.5"
 
 val JavaFXVersion = "16"
 
