@@ -17,7 +17,7 @@ addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.29")
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.5.3")
 
 // Release
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.7")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.9")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 
