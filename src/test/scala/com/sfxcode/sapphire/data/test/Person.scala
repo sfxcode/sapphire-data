@@ -9,22 +9,23 @@ import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 import scala.io.Source
 
 case class Person(
-  id: Long,
-  guid: String,
-  isActive: Boolean,
-  balance: Double,
-  picture: String,
-  age: Int,
-  name: String,
-  gender: String,
-  email: String,
-  phone: String,
-  address: String,
-  about: String,
-  tags: List[String],
-  friends: List[Friend],
-  greeting: String,
-  favoriteFruit: String)
+    id: Long,
+    guid: String,
+    isActive: Boolean,
+    balance: Double,
+    picture: String,
+    age: Int,
+    name: String,
+    gender: String,
+    email: String,
+    phone: String,
+    address: String,
+    about: String,
+    tags: List[String],
+    friends: List[Friend],
+    greeting: String,
+    favoriteFruit: String
+)
 
 case class Friend(id: Long, name: String) {
   def getValue(s: String): String = s
@@ -33,7 +34,7 @@ case class Friend(id: Long, name: String) {
 object PersonDatabase {
 
   private val jsonString: String = fromJson("/test_data.json")
-  val personen: List[Person] = decode[List[Person]](jsonString).getOrElse(List())
+  val personen: List[Person]     = decode[List[Person]](jsonString).getOrElse(List())
 
   val friends: List[Friend] = personen.head.friends
 

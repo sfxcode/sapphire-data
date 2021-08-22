@@ -23,7 +23,7 @@ class DataAdapterUpdateSpec extends munit.FunSuite {
 
   test("update java member value") {
     val bean: TestJavaBean = new TestJavaBean()
-    val testBean = DataAdapter(bean)
+    val testBean           = DataAdapter(bean)
 
     testBean.updateValue("name", "new")
     assertEquals(testBean.getValue("name"), "new")

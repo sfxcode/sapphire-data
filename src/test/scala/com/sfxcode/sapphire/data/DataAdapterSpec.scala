@@ -11,11 +11,12 @@ case class Book(id: Long, title: String, pages: Int, author: Author)
 case class Zip(value: Long = 12345)
 
 case class TestBean(
-  name: String = "test",
-  age: Int = 42,
-  zip: Zip = Zip(),
-  description: Option[String] = Some("desc"),
-  observable: Property[_] = new SimpleStringProperty("observable")) {
+    name: String = "test",
+    age: Int = 42,
+    zip: Zip = Zip(),
+    description: Option[String] = Some("desc"),
+    observable: Property[_] = new SimpleStringProperty("observable")
+) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -23,11 +24,12 @@ case class TestBean(
 }
 
 class TestClass(
-  var name: String = "test",
-  var age: Int = 42,
-  var zip: Zip = Zip(),
-  var description: Option[String] = Some("desc"),
-  var observable: Property[_] = new SimpleStringProperty("observable")) {
+    var name: String = "test",
+    var age: Int = 42,
+    var zip: Zip = Zip(),
+    var description: Option[String] = Some("desc"),
+    var observable: Property[_] = new SimpleStringProperty("observable")
+) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -88,7 +90,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
   test("get value of members of java class") {
     val bean: TestJavaBean = new TestJavaBean()
-    val testBean = DataAdapter[TestJavaBean](bean)
+    val testBean           = DataAdapter[TestJavaBean](bean)
     logger.debug(testBean.getProperty("date").toString)
     assertEquals(testBean.getValue("name"), "test")
     assertEquals(testBean.getValue("age"), 42)
@@ -112,9 +114,9 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
   }
 
   test("update expressions") {
-    val testBean = DataAdapter[TestBean](TestBean())
+    val testBean      = DataAdapter[TestBean](TestBean())
     val observableAge = testBean.getIntegerProperty("${_self.age()}")
-    val observable = testBean.getIntegerProperty("${_self.doubleAge()}")
+    val observable    = testBean.getIntegerProperty("${_self.doubleAge()}")
     assertEquals(observableAge.getValue.toInt, 42)
     assertEquals(observable.getValue.toInt, 84)
 
@@ -126,7 +128,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
   }
 
   test("update child expressions") {
-    val testBean = DataAdapter[ParentBean](ParentBean())
+    val testBean       = DataAdapter[ParentBean](ParentBean())
     val observableName = testBean.getStringProperty("${_self.fullName()}")
     assertEquals(observableName.getValue, "parentName : [child] childName")
     testBean.updateValue("parentName", "parent")

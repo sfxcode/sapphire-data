@@ -1,6 +1,6 @@
 import sbt.url
 
-organization := "com.sfxcode.sapphire"
+organization         := "com.sfxcode.sapphire"
 organizationHomepage := Some(url("https://github.com/sfxcode"))
 
 publishMavenStyle := true

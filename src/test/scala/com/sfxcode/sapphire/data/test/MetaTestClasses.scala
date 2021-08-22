@@ -6,9 +6,9 @@ import java.util.Date
 case class StringTest(value: String = "myString", valueOption: Option[String] = Some("myString2"))
 
 class StringTest2 {
-  var value: String = "myString"
-  var date: Date = new Date()
-  var localdate: LocalDate = LocalDate.now()
+  var value: String               = "myString"
+  var date: Date                  = new Date()
+  var localdate: LocalDate        = LocalDate.now()
   var valueOption: Option[String] = Some("myString2")
 
   def testMethod(a: Int): Int = a + 3
@@ -26,15 +26,15 @@ case class NoneTest(valueOption: Option[Long] = None)
 
 object MetaTestClasses {
 
-  val stringTest = StringTest()
-  val stringTest2 = new StringTest2()
-  val intTest = IntTest()
-  val longTest = LongTest()
-  val floatTest = FloatTest()
-  val doubleTest = DoubleTest()
-  val booleanTest = BooleanTest()
-  val dateTest = DateTest()
+  val stringTest    = StringTest()
+  val stringTest2   = new StringTest2()
+  val intTest       = IntTest()
+  val longTest      = LongTest()
+  val floatTest     = FloatTest()
+  val doubleTest    = DoubleTest()
+  val booleanTest   = BooleanTest()
+  val dateTest      = DateTest()
   val localDateTest = LocalDateTest()
-  val noneTest = NoneTest()
+  val noneTest      = NoneTest()
 
 }

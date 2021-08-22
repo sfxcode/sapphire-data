@@ -8,7 +8,7 @@ class DataAdapterPerformanceSpec extends munit.FunSuite with LazyLogging {
     val testBean = DataAdapter[TestClass](new TestClass())
     assertEquals(testBean.getValue("name"), "test")
     assertEquals(testBean.getValue("age"), 42)
-    val max = 1000
+    val max   = 1000
     val start = System.currentTimeMillis()
 
     (1 to max).foreach { i =>
