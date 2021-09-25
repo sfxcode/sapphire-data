@@ -14,9 +14,9 @@ scalacOptions += "-deprecation"
 
 test / parallelExecution := false
 
-val LogbackVersion = "1.2.3"
+val LogbackVersion = "1.2.6"
 
-val JavaFXVersion = "16"
+val JavaFXVersion = "17.0.0.1"
 
 val osName = System.getProperty("os.name") match {
   case n if n.startsWith("Linux")   => "linux"
@@ -27,7 +27,7 @@ val osName = System.getProperty("os.name") match {
 
 // Test
 
-libraryDependencies += "org.scalameta" %% "munit" % "0.7.26" % Test
+libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % LogbackVersion % Test
 
@@ -45,7 +45,7 @@ libraryDependencies ++= Seq("base").map(m => "org.openjfx" % s"javafx-$m" % Java
 
 // Environment
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.4.4"
+libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.5.0"
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 
@@ -53,7 +53,7 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.1"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.48"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.53"
 
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"

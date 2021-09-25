@@ -3,15 +3,14 @@
 A Framework for data handling. It provides an adapter for beans and maps with JavaFX Property support.
 
 ## Sapphire Frameworks
-Sapphire Data is heavily used in the sapphire ui frameworks:
+Sapphire Data is heavily used in the sapphire ui framework:
 
-* [sapphire-core](https://sfxcode.github.io/sapphire-core/)
-* [sapphire-extension](https://sfxcode.github.io/sapphire-extension/)
+* [sapphire-java](https://sfxcode.github.io/sapphire-java/)
 
 
 ## Cross Build
 
-Build and tested against Scala 2.12/2.13 and JDK 11 - 14
+Build and tested against Scala 3.0.0 /2.12/2.13 and JDK 11 - 14
 
 ## Framework Dependencies
 

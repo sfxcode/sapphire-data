@@ -1,10 +1,8 @@
 package com.sfxcode.sapphire.data.test
 
-import java.text.SimpleDateFormat
-import java.util.Date
-
 import com.sfxcode.sapphire.data.DataAdapter
-import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+import io.circe.generic.auto._
+import io.circe.parser._
 
 import scala.io.Source
 

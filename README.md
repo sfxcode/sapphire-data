@@ -21,7 +21,7 @@ Documentation under [https://sfxcode.github.io/sapphire-data](https://sfxcode.gi
 
 ## Cross Build
 
-Build and tested against Scala 2.12/2.13 and JDK 11/12
+Build and tested against Scala 3.0.0 /2.12/2.13 and JDK 11/12
 
 ## Licence
 

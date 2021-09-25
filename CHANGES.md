@@ -2,6 +2,9 @@
 
 ## Versions
 
+### 1.2.1
+* Dependency Updates
+
 ### 1.2.0
 * Scala 3 Support
 * moved from specs2 to munit
