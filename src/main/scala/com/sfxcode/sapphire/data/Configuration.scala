@@ -1,18 +1,25 @@
 package com.sfxcode.sapphire.data
 
+import com.sfxcode.sapphire.data.Configuration._
 import com.typesafe.config.{ Config, ConfigFactory }
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.jdk.CollectionConverters._
 
-trait Configuration extends LazyLogging {
+trait Configuration extends Stage with LazyLogging {
 
   val config: Config = ConfigFactory.load()
 
-  def configBooleanValue(path: String, defaultReturnValue: Boolean = false): Boolean =
-    configValue[Boolean](path, defaultReturnValue, config.getBoolean)
+  private def createPath(path: String): String =
+    if (path.contains(StagePattern)) {
 
-  private def configValue[E <: Any](path: String, defaultReturnValue: E = None, f: String => E): E =
+      path.replace(StagePattern, getStage)
+    } else {
+      path
+    }
+
+  private def configValue[E <: Any](pathValue: String, defaultReturnValue: E = None, f: String => E): E = {
+    val path = createPath(pathValue)
     if (config.hasPath(path)) {
       var result = defaultReturnValue
       try result = f(path)
@@ -22,9 +29,13 @@ trait Configuration extends LazyLogging {
       }
       result
     } else {
-      logger.warn("config path: %s not exist".format(path))
+      logger.warn(ErrorMessagePattern.format(path))
       defaultReturnValue
     }
+  }
+
+  def configBooleanValue(path: String, defaultReturnValue: Boolean = false): Boolean =
+    configValue[Boolean](path, defaultReturnValue, config.getBoolean)
 
   def configStringValue(path: String, defaultReturnValue: String = ""): String =
     configValue[String](path, defaultReturnValue, config.getString)
@@ -41,7 +52,8 @@ trait Configuration extends LazyLogging {
   def configBooleanValues(path: String): List[Boolean] =
     configValues[Boolean](path, config.getBooleanList)
 
-  private def configValues[E <: Any](path: String, f: String => java.util.List[_]): List[E] =
+  private def configValues[E <: Any](pathValue: String, f: String => java.util.List[_]): List[E] = {
+    val path = createPath(pathValue)
     if (config.hasPath(path)) {
       var result = List[E]()
       try result = f(path).asScala.toList.asInstanceOf[List[E]]
@@ -51,9 +63,10 @@ trait Configuration extends LazyLogging {
       }
       result
     } else {
-      logger.warn("config path: %s not exist".format(path))
+      logger.warn(ErrorMessagePattern.format(path))
       List()
     }
+  }
 
   def configStringValues(path: String): List[String] =
     configValues[String](path, config.getStringList)
@@ -67,4 +80,9 @@ trait Configuration extends LazyLogging {
   def configDoubleValues(path: String): List[Double] =
     configValues[Double](path, config.getDoubleList)
 
+}
+
+object Configuration {
+  val ErrorMessagePattern = "config path: %s not exist"
+  val StagePattern = "__stage__"
 }
