@@ -8,3 +8,5 @@ out
 .gitconfig
 exit
 .bsp
+/.pnpm-debug.log
+/node_modules/
