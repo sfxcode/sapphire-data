@@ -2,6 +2,9 @@
 
 ## Versions
 
+### 1.3.0
+* Dependency Updates
+
 ### 1.2.1
 * Dependency Updates
 

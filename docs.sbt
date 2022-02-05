@@ -3,7 +3,7 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(ParadoxMaterialThemePlugin)
   .enablePlugins(GhpagesPlugin)
   .settings(
-    scalaVersion := "2.13.5",
+    scalaVersion := "2.13.8",
     name := "sapphire-data-docs",
     publish / skip := true,
     ghpagesNoJekyll := true,

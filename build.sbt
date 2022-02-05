@@ -1,6 +1,6 @@
 name := "sapphire-data"
 
-crossScalaVersions := Seq("2.13.6", "3.0.0", "2.12.13")
+crossScalaVersions := Seq("2.13.8", "3.0.0", "2.12.13")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -14,22 +14,11 @@ scalacOptions += "-deprecation"
 
 test / parallelExecution := false
 
-val LogbackVersion = "1.2.6"
-
-val JavaFXVersion = "16"
-
-val osName = System.getProperty("os.name") match {
-  case n if n.startsWith("Linux")   => "linux"
-  case n if n.startsWith("Mac")     => "mac"
-  case n if n.startsWith("Windows") => "win"
-  case _                            => throw new Exception("Unknown platform!")
-}
-
 // Test
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % LogbackVersion % Test
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.10" % Test
 
 val circeVersion = "0.14.1"
 
@@ -41,24 +30,24 @@ libraryDependencies ++= Seq(
 
 // Compile
 
-libraryDependencies ++= Seq("base").map(m => "org.openjfx" % s"javafx-$m" % JavaFXVersion % Provided classifier osName)
+libraryDependencies += "org.openjfx" % "javafx-base" % "17.0.2"
 
 // Environment
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.5.0"
+libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.6.0"
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
 
-libraryDependencies += "com.typesafe" % "config" % "1.4.1"
+libraryDependencies += "com.typesafe" % "config" % "1.4.2"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "9.0.53"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.16"
 
 // optional report support
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
 
-libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.17.0" % Provided
+libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.18.1" % Provided
 
 libraryDependencies += ("com.github.pathikrit" %% "better-files" % "3.9.1" % Provided).cross(CrossVersion.for3Use2_13)
 

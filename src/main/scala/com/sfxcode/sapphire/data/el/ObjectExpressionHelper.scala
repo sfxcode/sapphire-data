@@ -1,6 +1,6 @@
 package com.sfxcode.sapphire.data.el
 
-import javax.el.MethodNotFoundException
+import jakarta.el.MethodNotFoundException
 
 object ObjectExpressionHelper {
   val TempObjectName = "_self"

@@ -1,6 +1,6 @@
 package com.sfxcode.sapphire.data.el
 
-import javax.el._
+import jakarta.el._
 
 import java.util.Properties
 import scala.reflect.ClassTag

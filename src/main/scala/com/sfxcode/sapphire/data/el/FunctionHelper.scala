@@ -1,7 +1,7 @@
 package com.sfxcode.sapphire.data.el
 
 import com.typesafe.scalalogging.LazyLogging
-import javax.el.ELProcessor
+import jakarta.el.ELProcessor
 import javafx.collections.{ FXCollections, ObservableMap }
 
 import java.lang.reflect.Method
