@@ -238,8 +238,9 @@ abstract class FieldProperties(val typeHints: List[FieldMeta]) extends ChangeLis
 
 object FieldProperties extends Configuration {
 
-  val DefaultDateConverterPattern: String = configStringValue("sapphire.defaultDateConverterPattern")
-  val DefaultDateTimeConverterPattern: String = configStringValue("sapphire.defaultDateTimeConverterPattern")
+  val DefaultDateConverterPattern: String = configStringValue("com.sfxcode.sapphire.data.defaultDateConverterPattern")
+  val DefaultDateTimeConverterPattern: String = configStringValue(
+    "com.sfxcode.sapphire.data.defaultDateTimeConverterPattern")
 
   var defaultDateConverter = new DateStringConverter(DefaultDateConverterPattern)
   var defaultDateTimeConverter = new DateTimeStringConverter(DefaultDateTimeConverterPattern)

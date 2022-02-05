@@ -2,6 +2,11 @@
 
 ## Versions
 
+### 1.3.1
+* Stage added
+* Stage available in configuration files
+* Functions added to Expression Language
+
 ### 1.3.0
 * Dependency Updates
 
