@@ -9,7 +9,7 @@ object Functions extends Configuration {
   val SapphireFunctionPrefix = "sfx"
 
   def addDefaultFunctions(helper: FunctionHelper): FunctionHelper = {
-    val clazz: Class[_] = Class.forName("com.sfxcode.sapphire.data.el.DefaultFunctions")
+    val clazz: Class[_] = Class.forName("com.sfxcode.sapphire.data.el.Functions")
     helper.addFunction(SapphireFunctionPrefix, "dataFrameworkVersion", clazz, "dataFrameworkVersion")
     helper.addFunction(SapphireFunctionPrefix, "dateString", clazz, "dateString", classOf[AnyRef])
     helper.addFunction(SapphireFunctionPrefix, "now", clazz, "now")
@@ -21,8 +21,7 @@ object Functions extends Configuration {
       "boolString",
       classOf[Boolean],
       classOf[String],
-      classOf[String]
-    )
+      classOf[String])
     helper.addFunction(SapphireFunctionPrefix, "configString", clazz, "configString", classOf[String])
     helper.addFunction(
       SapphireFunctionPrefix,
@@ -30,8 +29,7 @@ object Functions extends Configuration {
       classOf[java.lang.String],
       "format",
       classOf[String],
-      classOf[Array[Any]]
-    )
+      classOf[Array[Any]])
     helper
   }
 
@@ -40,8 +38,7 @@ object Functions extends Configuration {
   def boolString(value: Boolean, trueValue: String, falseValue: String): String =
     if (value) {
       trueValue
-    }
-    else {
+    } else {
       falseValue
     }
 
@@ -51,7 +48,7 @@ object Functions extends Configuration {
 
   def dateString(date: AnyRef): String = {
     val s = date match {
-      case d: java.util.Date     => defaultDateConverter.toString(d)
+      case d: java.util.Date => defaultDateConverter.toString(d)
       case c: java.util.Calendar => defaultDateConverter.toString(c.getTime)
       case c: javax.xml.datatype.XMLGregorianCalendar =>
         defaultDateConverter.toString(c.toGregorianCalendar.getTime)
