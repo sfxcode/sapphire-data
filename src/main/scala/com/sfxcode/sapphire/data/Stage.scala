@@ -4,7 +4,7 @@ import com.sfxcode.sapphire.data.StageValues._
 import com.typesafe.scalalogging.LazyLogging
 
 trait Stage extends LazyLogging {
-  val StageKey = "com.sfxcode.sapphire.data.stage"
+  val StageKey = "SFX_SYSTEM_STAGE"
 
   def isDevelopment: Boolean =
     Development.toString == getStage
@@ -25,7 +25,8 @@ trait Stage extends LazyLogging {
     val stageProperty = System.getProperty(StageKey)
     if (stageProperty != null && stageProperty.nonEmpty) {
       stageProperty
-    } else {
+    }
+    else {
       Development.toString
     }
   }

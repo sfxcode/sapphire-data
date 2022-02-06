@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 1.3.2
+* System Stage Key : SFX_SYSTEM_STAGE
+* Start vite docs
+
 ### 1.3.1
 * Stage added
 * Stage available in configuration files
