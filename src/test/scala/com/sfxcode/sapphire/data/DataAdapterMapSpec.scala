@@ -15,16 +15,16 @@ class DataAdapterMapSpec extends munit.FunSuite {
     assertEquals(testMap("name"), "new")
     assertEquals(testBean("name"), "new")
     assertEquals(testBean.getOldValue("name"), "test")
-    assert(testBean.hasChanges)
+    assert(testBean.hasChanges())
     testBean.updateValue("name", "test")
-    assert(!testBean.hasChanges)
+    assert(!testBean.hasChanges())
     testBean.updateValue("name", "new")
     assertEquals(testBean.value("name"), "new")
     testBean.revert()
     assertEquals(testBean.value("name"), "test")
     assertEquals(testBean("name"), "test")
 
-    assertEquals(testMap("name"), "ABC")
+    assertEquals(testMap("name"), "test")
   }
 
   test("update java map value") {
@@ -45,7 +45,7 @@ class DataAdapterMapSpec extends munit.FunSuite {
     assertEquals(wrapped.value("name"), "test")
     assertEquals(wrapped("name"), "test")
 
-    assertEquals(testMap.get("name"), "ABC")
+    assertEquals(testMap.get("name"), "test")
   }
 
 }

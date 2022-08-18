@@ -1,27 +1,26 @@
 package com.sfxcode.sapphire.data
 
-import com.sfxcode.sapphire.data.el.{Expressions, ObjectExpressionHelper}
+import com.sfxcode.sapphire.data.el.{ Expressions, ObjectExpressionHelper }
 import com.sfxcode.sapphire.data.reflect.FieldMeta._
-import com.sfxcode.sapphire.data.reflect.{FieldMeta, FieldRegistry, ReflectionTools}
+import com.sfxcode.sapphire.data.reflect.{ FieldMeta, FieldRegistry, ReflectionTools }
 import com.typesafe.scalalogging.LazyLogging
 
 import java.lang.reflect.Field
 import java.util
-import scala.collection.{immutable, mutable}
+import scala.collection.{ immutable, mutable }
 import scala.jdk.CollectionConverters._
 
 class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = EmptyTypeHints)
-    extends ValueHelper
-    with java.util.Map[String, Any]
-    with LazyLogging {
+  extends ValueHelper
+  with java.util.Map[String, Any]
+  with LazyLogging {
 
-  val reflectedFields: immutable.Map[String, Field]          = FieldRegistry.fieldMap(wrappedData.getClass)
-  lazy val changeManagementMap: mutable.HashMap[String, Any] = new mutable.HashMap[String, Any]()
-  lazy val childrenMap: mutable.HashMap[String, DataAdapter[AnyRef]] =
+  val reflectedFields: immutable.Map[String, Field] = FieldRegistry.fieldMap(wrappedData.getClass)
+  val changeManagementMap: mutable.HashMap[String, Any] = new mutable.HashMap[String, Any]()
+  val childrenMap: mutable.HashMap[String, DataAdapter[AnyRef]] =
     new mutable.HashMap[String, DataAdapter[AnyRef]]()
-  lazy val expressionMap: mutable.HashMap[String, Any] = new mutable.HashMap[String, Any]()
-  var trackChanges: Boolean                            = true
-  var parentDataAdapter: Option[DataAdapter[AnyRef]]   = None
+  var trackChanges: Boolean = true
+  var parentDataAdapter: Option[DataAdapter[AnyRef]] = None
 
   def data: AnyRef = wrappedData
 
@@ -30,29 +29,27 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
 
   def getOldValue(key: String): Any =
     if (trackChanges) {
-      Some(changeManagementMap.get(key)).getOrElse(value(key))
-    }
-    else {
+      changeManagementMap.get(key).getOrElse(value(key))
+    } else {
       value(key)
     }
 
   private def handleRelations(key: String): Boolean =
     key.contains(".") && !key.contains(ObjectExpressionHelper.ExpressionPrefix) &&
-    !key.contains(ObjectExpressionHelper.FxmlExpressionPrefix)
+      !key.contains(ObjectExpressionHelper.FxmlExpressionPrefix)
 
   def value(key: String): Any =
     wrappedData match {
       case map: scala.collection.Map[String, Any] => map(key)
-      case javaMap: java.util.Map[String, Any]    => javaMap.get(key)
+      case javaMap: java.util.Map[String, Any] => javaMap.get(key)
       case _ =>
         if (handleRelations(key)) {
-          val objectKey     = key.substring(0, key.indexOf("."))
-          val newKey        = key.substring(key.indexOf(".") + 1)
+          val objectKey = key.substring(0, key.indexOf("."))
+          val newKey = key.substring(key.indexOf(".") + 1)
           val relatedObject = value(objectKey)
-          val childBean     = createChildForKey(objectKey, relatedObject)
+          val childBean = createChildForKey(objectKey, relatedObject)
           childBean.value(newKey)
-        }
-        else {
+        } else {
           try getValueForExpression(key).get
           catch {
             case e: Exception =>
@@ -77,17 +74,20 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
       newValue = null
     }
     wrappedData match {
-      case map: mutable.Map[String, Any]       => map.put(key, newValue)
-      case javaMap: java.util.Map[String, Any] => javaMap.put(key, newValue)
+      case map: mutable.Map[String, Any] =>
+        map.put(key, newValue)
+        preserveChanges(key, oldValue, newValue)
+      case javaMap: java.util.Map[String, Any] =>
+        javaMap.put(key, newValue)
+        preserveChanges(key, oldValue, newValue)
       case _ =>
         if (handleRelations(key)) {
-          val objectKey     = key.substring(0, key.indexOf("."))
-          val newKey        = key.substring(key.indexOf(".") + 1)
+          val objectKey = key.substring(0, key.indexOf("."))
+          val newKey = key.substring(key.indexOf(".") + 1)
           val relatedObject = value(objectKey)
-          val childBean     = createChildForKey(objectKey, relatedObject)
+          val childBean = createChildForKey(objectKey, relatedObject)
           childBean.updateValue(newKey, valueToUpdate)
-        }
-        else {
+        } else {
           ReflectionTools.setFieldValue(wrappedData, key, newValue)
           childrenMap.remove(key)
           preserveChanges(key, oldValue, newValue)
@@ -110,11 +110,10 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   def preserveChanges(key: String, oldValue: Any, newValue: Any): Unit =
     if (trackChanges) {
       if (changeManagementMap.contains(key)) {
-        if (changeManagementMap.get(key) == newValue || newValue.equals(changeManagementMap.get(key))) {
+        if (newValue == changeManagementMap(key) || newValue.equals(changeManagementMap(key))) {
           changeManagementMap.remove(key)
         }
-      }
-      else {
+      } else {
         changeManagementMap.put(key, oldValue)
       }
     }
@@ -123,14 +122,23 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
     if (trackChanges) {
       trackChanges = false
       changeManagementMap.keySet.foreach { key =>
-        val oldValue = changeManagementMap.get(key)
+        val oldValue = changeManagementMap(key)
         updateValue(key, oldValue)
       }
       childrenMap.keySet.foreach(key => childrenMap(key).revert())
       trackChanges = true
       clearChanges()
     }
-  def hasChanges(): Boolean = changeManagementMap.nonEmpty
+  def hasChanges(): Boolean = {
+    if (changeManagementMap.nonEmpty) {
+      return true
+    }
+    childrenMap.values.foreach(dataAdapter =>
+      if (dataAdapter.hasChanges()) {
+        return true
+      })
+    false
+  }
 
   def clearChanges(): Unit =
     if (trackChanges) {
@@ -144,9 +152,9 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   // java.util.Map Fascade
   override def size(): Int =
     wrappedData match {
-      case map: scala.collection.Map[_, _]     => map.size
+      case map: scala.collection.Map[_, _] => map.size
       case javaMap: java.util.Map[String, Any] => javaMap.size()
-      case _                                   => reflectedFields.size
+      case _ => reflectedFields.size
     }
 
   override def isEmpty: Boolean =
@@ -155,15 +163,15 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   override def containsKey(key: Any): Boolean =
     wrappedData match {
       case map: scala.collection.Map[String, _] => map.contains(key.toString)
-      case javaMap: java.util.Map[String, Any]  => javaMap.containsKey(key)
-      case _                                    => reflectedFields.keySet.contains(key.toString)
+      case javaMap: java.util.Map[String, Any] => javaMap.containsKey(key)
+      case _ => reflectedFields.keySet.contains(key.toString)
     }
 
   override def containsValue(value: Any): Boolean =
     wrappedData match {
-      case map: scala.collection.Map[_, _]     => map.values.toList.contains(value)
+      case map: scala.collection.Map[_, _] => map.values.toList.contains(value)
       case javaMap: java.util.Map[String, Any] => javaMap.containsValue(value)
-      case _                                   => FieldRegistry.memberMap(wrappedData).values.toList.contains(value)
+      case _ => FieldRegistry.memberMap(wrappedData).values.toList.contains(value)
     }
 
   override def get(key: Any): Any = value(key.toString)
@@ -172,9 +180,9 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
 
   override def remove(key: Any): Any =
     wrappedData match {
-      case map: mutable.Map[String, Any]       => map.remove(key.toString)
+      case map: mutable.Map[String, Any] => map.remove(key.toString)
       case javaMap: java.util.Map[String, Any] => javaMap.remove(key)
-      case _                                   =>
+      case _ =>
     }
 
   override def putAll(map: java.util.Map[_ <: String, _]): Unit =
@@ -184,22 +192,22 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
 
   override def clear(): Unit =
     wrappedData match {
-      case map: mutable.Map[String, Any]       => map.clear()
+      case map: mutable.Map[String, Any] => map.clear()
       case javaMap: java.util.Map[String, Any] => javaMap.clear()
-      case _                                   =>
+      case _ =>
     }
 
   override def keySet(): java.util.Set[String] = wrappedData match {
     case map: scala.collection.Map[String, Any] => map.keySet.asJava
-    case javaMap: java.util.Map[String, Any]    => javaMap.keySet
-    case _                                      => FieldRegistry.memberMap(wrappedData).keySet.asJava
+    case javaMap: java.util.Map[String, Any] => javaMap.keySet
+    case _ => FieldRegistry.memberMap(wrappedData).keySet.asJava
   }
 
   override def values(): java.util.Collection[Any] =
     wrappedData match {
       case map: scala.collection.Map[String, Any] => map.values.asJavaCollection
-      case javaMap: java.util.Map[String, Any]    => javaMap.values()
-      case _                                      => FieldRegistry.memberMap(wrappedData).values.asJavaCollection
+      case javaMap: java.util.Map[String, Any] => javaMap.values()
+      case _ => FieldRegistry.memberMap(wrappedData).values.asJavaCollection
     }
 
   override def entrySet(): java.util.Set[util.Map.Entry[String, Any]] =

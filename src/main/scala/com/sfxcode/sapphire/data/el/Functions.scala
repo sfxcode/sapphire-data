@@ -1,6 +1,6 @@
 package com.sfxcode.sapphire.data.el
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.{ Config, ConfigFactory }
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -25,16 +25,14 @@ object Functions {
       "boolString",
       classOf[Boolean],
       classOf[String],
-      classOf[String]
-    )
+      classOf[String])
     helper.addFunction(
       SapphireFunctionPrefix,
       "format",
       classOf[java.lang.String],
       "format",
       classOf[String],
-      classOf[Array[Any]]
-    )
+      classOf[Array[Any]])
     helper
   }
 
@@ -43,8 +41,7 @@ object Functions {
   def boolString(value: Boolean, trueValue: String, falseValue: String): String =
     if (value) {
       trueValue
-    }
-    else {
+    } else {
       falseValue
     }
 
@@ -54,10 +51,10 @@ object Functions {
 
   def dateString(date: AnyRef): String = {
     val s = date match {
-      case d: java.util.Date                          => dateFormat.format(d)
-      case c: java.util.Calendar                      => dateFormat.format(c.getTime)
+      case d: java.util.Date => dateFormat.format(d)
+      case c: java.util.Calendar => dateFormat.format(c.getTime)
       case c: javax.xml.datatype.XMLGregorianCalendar => dateFormat.format(c.toGregorianCalendar.getTime)
-      case _                                          => "unknown date format"
+      case _ => "unknown date format"
     }
     s
   }

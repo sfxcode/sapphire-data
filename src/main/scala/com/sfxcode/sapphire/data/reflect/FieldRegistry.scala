@@ -19,8 +19,7 @@ object FieldRegistry {
       val map = result.toMap
       registry.+=(clazz -> map)
       map
-    }
-    else
+    } else
       registry(clazz)
 
   def field(target: AnyRef, name: String): Option[Field] =
@@ -31,8 +30,8 @@ object FieldRegistry {
 
   def memberMap(v: AnyRef): Map[String, Any] = {
     val result = new mutable.HashMap[String, Any]()
-    val clazz  = v.getClass
-    val map    = fieldMap(clazz)
+    val clazz = v.getClass
+    val map = fieldMap(clazz)
 
     map.keys.foreach { name =>
       val field: Field = map(name)

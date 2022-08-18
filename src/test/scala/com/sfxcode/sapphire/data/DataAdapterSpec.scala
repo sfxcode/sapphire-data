@@ -10,10 +10,11 @@ case class Book(id: Long, title: String, pages: Int, author: Author)
 case class Zip(value: Long = 12345)
 
 case class TestBean(
-  name: String = "test",
-  age: Int = 42,
-  zip: Zip = Zip(),
-  description: Option[String] = Some("desc")) {
+    name: String = "test",
+    age: Int = 42,
+    zip: Zip = Zip(),
+    description: Option[String] = Some("desc")
+) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -21,10 +22,11 @@ case class TestBean(
 }
 
 class TestClass(
-  var name: String = "test",
-  var age: Int = 42,
-  var zip: Zip = Zip(),
-  var description: Option[String] = Some("desc")) {
+    var name: String = "test",
+    var age: Int = 42,
+    var zip: Zip = Zip(),
+    var description: Option[String] = Some("desc")
+) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -81,7 +83,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
   test("get value of members of java class") {
     val bean: TestJavaBean = new TestJavaBean()
-    val testBean = DataAdapter[TestJavaBean](bean)
+    val testBean           = DataAdapter[TestJavaBean](bean)
     assertEquals(testBean.value("name"), "test")
     assertEquals(testBean.value("age"), 42)
 
@@ -130,8 +132,6 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
     assertEquals(wrapper.value("author.name"), "Martin Odersky")
     wrapper.updateValue("author.name", "M. Odersky")
     assertEquals(wrapper.value("author.name"), "M. Odersky")
-
-    assertEquals(wrapper.value("author.name"), "Martin Odersky")
   }
 
   test("handle scala map ") {
@@ -144,25 +144,25 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
   }
 
-  test("handle changes) ") {
+  test("handle changes ") {
     val testBean = DataAdapter[ParentBean](ParentBean())
 
     assert(!testBean.hasChanges)
 
     testBean.updateValue("parentName", "newName")
     assertEquals(testBean.value("parentName"), "newName")
-    assert(testBean.hasChanges)
+    assert(testBean.hasChanges())
 
     testBean.revert()
     assertEquals(testBean.value("parentName"), "parentName")
-    assert(!testBean.hasChanges)
+    assert(!testBean.hasChanges())
 
     testBean.updateValue("child.childName", "newName")
     assertEquals(testBean.value("child.childName"), "newName")
-    assert(testBean.hasChanges)
+    assert(testBean.hasChanges())
     testBean.updateValue("parentName", "newName")
     testBean.updateValue("parentName", "parentName")
-    assert(testBean.hasChanges)
+    assert(testBean.hasChanges())
 
     testBean.revert()
     assertEquals(testBean.value("child.childName"), "childName")
