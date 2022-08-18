@@ -6,7 +6,6 @@ export default defineConfig({
     description: 'Scala Adapter for data with key value handling.',
 
     lastUpdated: true,
-    cleanUrls: 'without-subfolders',
 
     themeConfig: {
         logo: '/sfxcode.png',
