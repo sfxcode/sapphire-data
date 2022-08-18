@@ -38,7 +38,7 @@ class DataAdapterMapSpec extends munit.FunSuite {
     assertEquals(wrapped.oldValue("name"), "test")
     assert(wrapped.hasChanges())
     wrapped.updateValue("name", "test")
-    assert(!wrapped.hasChanges)
+    assert(!wrapped.hasChanges())
     wrapped.updateValue("name", "new")
     assertEquals(wrapped.value("name"), "new")
     wrapped.revert()

@@ -1,6 +1,6 @@
 name := "sapphire-data"
 
-crossScalaVersions := Seq("2.13.8", "3.0.0", "2.12.13")
+crossScalaVersions := Seq("2.13.8", "3.1.3", "2.12.13")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -18,7 +18,7 @@ test / parallelExecution := false
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.10" % Test
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.11" % Test
 
 val circeVersion = "0.14.2"
 
@@ -42,7 +42,7 @@ libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.23"
 
 // optional report support
 
-resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
+resolvers += "jasperreports-repo".at("https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts")
 
 libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.20.0" % Provided
 

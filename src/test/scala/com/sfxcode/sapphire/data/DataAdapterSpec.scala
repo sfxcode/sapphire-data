@@ -9,22 +9,14 @@ case class Book(id: Long, title: String, pages: Int, author: Author)
 
 case class Zip(value: Long = 12345)
 
-case class TestBean(
-  name: String = "test",
-  age: Int = 42,
-  zip: Zip = Zip(),
-  description: Option[String] = Some("desc")) {
+case class TestBean(name: String = "test", age: Int = 42, zip: Zip = Zip(), description: Option[String] = Some("desc")) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
 
 }
 
-class TestClass(
-  var name: String = "test",
-  var age: Int = 42,
-  var zip: Zip = Zip(),
-  var description: Option[String] = Some("desc")) {
+class TestClass(var name: String = "test", var age: Int = 42, var zip: Zip = Zip(), var description: Option[String] = Some("desc")) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -142,7 +134,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
   test("handle changes ") {
     val testBean = DataAdapter[ParentBean](ParentBean())
 
-    assert(!testBean.hasChanges)
+    assert(!testBean.hasChanges())
 
     testBean.updateValue("parentName", "newName")
     assertEquals(testBean.value("parentName"), "newName")
@@ -162,7 +154,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
     testBean.revert()
     assertEquals(testBean.value("child.childName"), "childName")
 
-    assert(!testBean.hasChanges)
+    assert(!testBean.hasChanges())
   }
 
   test("update value with conversion") {
