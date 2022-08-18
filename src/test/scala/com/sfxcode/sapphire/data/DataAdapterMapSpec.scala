@@ -1,7 +1,6 @@
 package com.sfxcode.sapphire.data
 
 import com.sfxcode.sapphire.data.reflect.FieldMeta
-import javafx.beans.property.StringProperty
 
 import scala.collection.mutable
 
@@ -12,7 +11,7 @@ class DataAdapterMapSpec extends munit.FunSuite {
     testMap.put("name", "test")
     val testBean = DataAdapter(testMap, List(FieldMeta("name")))
     testBean.updateValue("name", "new")
-    assertEquals(testBean.getValue("name"), "new")
+    assertEquals(testBean.value("name"), "new")
     assertEquals(testMap("name"), "new")
     assertEquals(testBean("name"), "new")
     assertEquals(testBean.getOldValue("name"), "test")
@@ -20,14 +19,11 @@ class DataAdapterMapSpec extends munit.FunSuite {
     testBean.updateValue("name", "test")
     assert(!testBean.hasChanges)
     testBean.updateValue("name", "new")
-    assertEquals(testBean.getValue("name"), "new")
+    assertEquals(testBean.value("name"), "new")
     testBean.revert()
-    assertEquals(testBean.getValue("name"), "test")
+    assertEquals(testBean.value("name"), "test")
     assertEquals(testBean("name"), "test")
 
-    val property = testBean.getProperty("name")
-    assert(property.isInstanceOf[StringProperty])
-    property.asInstanceOf[StringProperty].setValue("ABC")
     assertEquals(testMap("name"), "ABC")
   }
 
@@ -36,22 +32,19 @@ class DataAdapterMapSpec extends munit.FunSuite {
     testMap.put("name", "test")
     val wrapped = DataAdapter(testMap, List(FieldMeta("name")))
     wrapped.updateValue("name", "new")
-    assertEquals(wrapped.getValue("name"), "new")
+    assertEquals(wrapped.value("name"), "new")
     assertEquals(testMap.get("name"), "new")
     assertEquals(wrapped("name"), "new")
     assertEquals(wrapped.getOldValue("name"), "test")
-    assert(wrapped.hasChanges)
+    assert(wrapped.hasChanges())
     wrapped.updateValue("name", "test")
     assert(!wrapped.hasChanges)
     wrapped.updateValue("name", "new")
-    assertEquals(wrapped.getValue("name"), "new")
+    assertEquals(wrapped.value("name"), "new")
     wrapped.revert()
-    assertEquals(wrapped.getValue("name"), "test")
+    assertEquals(wrapped.value("name"), "test")
     assertEquals(wrapped("name"), "test")
 
-    val property = wrapped.getProperty("name")
-    assert(property.isInstanceOf[StringProperty])
-    property.asInstanceOf[StringProperty].setValue("ABC")
     assertEquals(testMap.get("name"), "ABC")
   }
 

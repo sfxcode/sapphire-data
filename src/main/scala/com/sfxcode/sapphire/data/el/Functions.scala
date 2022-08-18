@@ -1,12 +1,16 @@
 package com.sfxcode.sapphire.data.el
 
-import com.sfxcode.sapphire.data.Configuration
-import com.sfxcode.sapphire.data.wrapper.FieldProperties.defaultDateConverter
+import com.typesafe.config.{Config, ConfigFactory}
 
+import java.text.SimpleDateFormat
 import java.util.Date
 
-object Functions extends Configuration {
+object Functions {
+  val config: Config = ConfigFactory.load()
+
   val SapphireFunctionPrefix = "sfx"
+
+  val dateFormat = new SimpleDateFormat(config.getString("com.sfxcode.sapphire.data.defaultDateConverterPattern"));
 
   def addDefaultFunctions(helper: FunctionHelper): FunctionHelper = {
     val clazz: Class[_] = Class.forName("com.sfxcode.sapphire.data.el.Functions")
@@ -21,15 +25,16 @@ object Functions extends Configuration {
       "boolString",
       classOf[Boolean],
       classOf[String],
-      classOf[String])
-    helper.addFunction(SapphireFunctionPrefix, "configString", clazz, "configString", classOf[String])
+      classOf[String]
+    )
     helper.addFunction(
       SapphireFunctionPrefix,
       "format",
       classOf[java.lang.String],
       "format",
       classOf[String],
-      classOf[Array[Any]])
+      classOf[Array[Any]]
+    )
     helper
   }
 
@@ -38,7 +43,8 @@ object Functions extends Configuration {
   def boolString(value: Boolean, trueValue: String, falseValue: String): String =
     if (value) {
       trueValue
-    } else {
+    }
+    else {
       falseValue
     }
 
@@ -48,15 +54,11 @@ object Functions extends Configuration {
 
   def dateString(date: AnyRef): String = {
     val s = date match {
-      case d: java.util.Date => defaultDateConverter.toString(d)
-      case c: java.util.Calendar => defaultDateConverter.toString(c.getTime)
-      case c: javax.xml.datatype.XMLGregorianCalendar =>
-        defaultDateConverter.toString(c.toGregorianCalendar.getTime)
-      case _ => "unknown date format"
+      case d: java.util.Date                          => dateFormat.format(d)
+      case c: java.util.Calendar                      => dateFormat.format(c.getTime)
+      case c: javax.xml.datatype.XMLGregorianCalendar => dateFormat.format(c.toGregorianCalendar.getTime)
+      case _                                          => "unknown date format"
     }
     s
   }
-
-  def configString(path: String): String = configStringValue(path)
-
 }

@@ -2,14 +2,11 @@ package com.sfxcode.sapphire.data.report
 
 import com.sfxcode.sapphire.data.DataAdapter
 import com.sfxcode.sapphire.data.report.AdapterDataSource.PatternReplacements
-import javafx.collections.ObservableList
-import net.sf.jasperreports.engine.{ JRField, JRRewindableDataSource }
-
-import scala.jdk.CollectionConverters._
+import net.sf.jasperreports.engine.{JRField, JRRewindableDataSource}
 
 case class AdapterDataSource[T <: AnyRef](dataList: List[DataAdapter[T]])
-  extends JRRewindableDataSource
-  with Serializable {
+    extends JRRewindableDataSource
+    with Serializable {
   private var index = -1
 
   override def moveFirst(): Unit = index = -1
@@ -20,10 +17,10 @@ case class AdapterDataSource[T <: AnyRef](dataList: List[DataAdapter[T]])
   }
 
   override def getFieldValue(jrField: JRField): AnyRef = {
-    val key: String = replaceExpressionPattern(jrField.getName)
+    val key: String          = replaceExpressionPattern(jrField.getName)
     val bean: DataAdapter[_] = dataList(index)
 
-    bean.getValue(key).asInstanceOf[AnyRef]
+    bean.value(key).asInstanceOf[AnyRef]
   }
 
   def replaceExpressionPattern(fieldName: String): String = {
@@ -43,6 +40,4 @@ object AdapterDataSource {
   def fromList[T <: AnyRef](dataList: List[T]): AdapterDataSource[T] =
     new AdapterDataSource[T](dataList.map(item => DataAdapter[T](item)))
 
-  def fromObservableList[T <: AnyRef](dataList: ObservableList[DataAdapter[T]]): AdapterDataSource[T] =
-    new AdapterDataSource[T](dataList.asScala.toList)
 }

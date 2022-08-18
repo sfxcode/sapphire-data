@@ -20,7 +20,7 @@ libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.10" % Test
 
-val circeVersion = "0.14.1"
+val circeVersion = "0.14.2"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
@@ -28,26 +28,23 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser"
 ).map(_ % circeVersion % Test)
 
-// Compile
-
-libraryDependencies += "org.openjfx" % "javafx-base" % "17.0.2"
-
 // Environment
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.6.0"
+libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.8.1"
 
-libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
 libraryDependencies += "com.typesafe" % "config" % "1.4.2"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.16"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.23"
 
 // optional report support
+
 resolvers += "jasperreports-repo" at "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts"
 
-libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.18.1" % Provided
+libraryDependencies += "net.sf.jasperreports" % "jasperreports" % "6.20.0" % Provided
 
 libraryDependencies += ("com.github.pathikrit" %% "better-files" % "3.9.1" % Provided).cross(CrossVersion.for3Use2_13)
 

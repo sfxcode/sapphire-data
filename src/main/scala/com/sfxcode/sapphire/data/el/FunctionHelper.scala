@@ -2,15 +2,15 @@ package com.sfxcode.sapphire.data.el
 
 import com.typesafe.scalalogging.LazyLogging
 import jakarta.el.ELProcessor
-import javafx.collections.{ FXCollections, ObservableMap }
 
 import java.lang.reflect.Method
+import scala.collection.mutable
 
 case class FunctionHelper(processor: ELProcessor) extends LazyLogging {
-  val map: ObservableMap[String, Method] = FXCollections.observableHashMap[String, Method]()
+  val map: mutable.HashMap[String, Method] = new mutable.HashMap[String, Method]()
 
   def resolveFunction(prefix: String, localName: String): Method =
-    map.get(key(prefix, localName))
+    map(key(prefix, localName))
 
   def key(prefix: String, localName: String): String =
     "%s:%s".format(prefix, localName)
@@ -26,7 +26,7 @@ case class FunctionHelper(processor: ELProcessor) extends LazyLogging {
 
   def addFunction(prefix: String, localName: String, method: Method): Unit = {
     val functionKey = key(prefix, localName)
-    if (map.containsKey(functionKey)) {
+    if (map.contains(functionKey)) {
       logger.warn("function override for key: %s".format(functionKey))
     }
     map.put(functionKey, method)

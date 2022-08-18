@@ -6,14 +6,14 @@ class DataAdapterValueHelperSpec extends munit.FunSuite {
 
   test("getValues from adapter") {
 
-    assertEquals(adapter.getIntValue("age"), Some(42))
-    assertEquals(adapter.getLongValue("age"), Some(42L))
-    assertEquals(adapter.getFloatValue("age"), Some(42.0f))
-    assertEquals(adapter.getDoubleValue("age"), Some(42.0))
-    assertEquals(adapter.getStringValue("age"), Some("42"))
+    assertEquals(adapter.intOption("age"), Some(42))
+    assertEquals(adapter.longOption("age"), Some(42L))
+    assertEquals(adapter.floatOption("age"), Some(42.0f))
+    assertEquals(adapter.doubleOption("age"), Some(42.0))
+    assertEquals(adapter.stringOption("age"), Some("42"))
 
-    assertEquals(adapter.getLongValue("unknown"), None)
-    assertEquals(adapter.getLongValue("unknown", Some(42)), Some(42L))
+    assertEquals(adapter.longOption("unknown"), None)
+    assertEquals(adapter.longOption("unknown", Some(42)), Some(42L))
   }
 
 }

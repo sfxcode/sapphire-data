@@ -9,16 +9,16 @@ class DataAdapterUpdateSpec extends munit.FunSuite {
   test("update member value") {
     val testBean = DataAdapter(UpdateTestBean())
     testBean.updateValue("name", "new")
-    assertEquals(testBean.getValue("name"), "new")
+    assertEquals(testBean.value("name"), "new")
     assertEquals(testBean("name"), "new")
     assertEquals(testBean.getOldValue("name"), "test")
     assert(testBean.hasChanges)
     testBean.updateValue("name", "test")
     assert(!testBean.hasChanges)
     testBean.updateValue("name", "new")
-    assertEquals(testBean.getValue("name"), "new")
+    assertEquals(testBean.value("name"), "new")
     testBean.revert()
-    assertEquals(testBean.getValue("name"), "test")
+    assertEquals(testBean.value("name"), "test")
   }
 
   test("update java member value") {
@@ -26,17 +26,17 @@ class DataAdapterUpdateSpec extends munit.FunSuite {
     val testBean = DataAdapter(bean)
 
     testBean.updateValue("name", "new")
-    assertEquals(testBean.getValue("name"), "new")
+    assertEquals(testBean.value("name"), "new")
     assertEquals(testBean("name"), "new")
     assertEquals(testBean.getOldValue("name"), "test")
-    assert(testBean.hasChanges)
+    assert(testBean.hasChanges())
     testBean.updateValue("name", "test")
     assert(!testBean.hasChanges)
 
     testBean.updateValue("name", "new")
-    assertEquals(testBean.getValue("name"), "new")
+    assertEquals(testBean.value("name"), "new")
     testBean.revert()
-    assertEquals(testBean.getValue("name"), "test")
+    assertEquals(testBean.value("name"), "test")
 
     testBean.updateValue("age", 3)
     assertEquals(bean.getAge, 3)

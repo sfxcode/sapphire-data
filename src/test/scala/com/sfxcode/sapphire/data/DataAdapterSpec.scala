@@ -2,7 +2,6 @@ package com.sfxcode.sapphire.data
 
 import com.sfxcode.sapphire.data.test.TestJavaBean
 import com.typesafe.scalalogging.LazyLogging
-import javafx.beans.property._
 
 case class Author(var name: String)
 
@@ -14,8 +13,7 @@ case class TestBean(
   name: String = "test",
   age: Int = 42,
   zip: Zip = Zip(),
-  description: Option[String] = Some("desc"),
-  observable: Property[_] = new SimpleStringProperty("observable")) {
+  description: Option[String] = Some("desc")) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -26,8 +24,7 @@ class TestClass(
   var name: String = "test",
   var age: Int = 42,
   var zip: Zip = Zip(),
-  var description: Option[String] = Some("desc"),
-  var observable: Property[_] = new SimpleStringProperty("observable")) {
+  var description: Option[String] = Some("desc")) {
   def doubleAge(): Int = age * 2
 
   def multiply(first: java.lang.Long, second: java.lang.Long): Long = first * second
@@ -51,47 +48,42 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
   test("get value of members of case class") {
 
     val testBean = DataAdapter[TestBean](TestBean())
-    assertEquals(testBean.getValue("name"), "test")
-    assertEquals(testBean.getValue("age"), 42)
-    assertEquals(testBean.getValue("description"), Some("desc"))
-    assertEquals(testBean.getValue("observable").asInstanceOf[StringProperty].getValue, "observable")
-    assertEquals(testBean.getValue("zip").asInstanceOf[Zip].value, 12345L)
+    assertEquals(testBean.value("name"), "test")
+    assertEquals(testBean.value("age"), 42)
+    assertEquals(testBean.value("description"), Some("desc"))
+    assertEquals(testBean.value("zip").asInstanceOf[Zip].value, 12345L)
 
     assertEquals(testBean("name"), "test")
     assertEquals(testBean("age"), 42)
     assertEquals(testBean("description"), Some("desc"))
-    assertEquals(testBean("observable").asInstanceOf[StringProperty].getValue, "observable")
     assertEquals(testBean("zip").asInstanceOf[Zip].value, 12345L)
 
     val testBean2 = DataAdapter[TestBean](TestBean())
 
     testBean2.updateValue("description", None)
     assertEquals(testBean2.wrappedData.description, None)
-    assertEquals(testBean2.getValue("description"), None)
+    assertEquals(testBean2.value("description"), None)
 
   }
 
   test("get value of members of class") {
     val testBean = DataAdapter[TestClass](new TestClass())
-    assertEquals(testBean.getValue("name"), "test")
-    assertEquals(testBean.getValue("age"), 42)
-    assertEquals(testBean.getValue("description"), Some("desc"))
-    assertEquals(testBean.getValue("observable").asInstanceOf[StringProperty].getValue, "observable")
-    assertEquals(testBean.getValue("zip").asInstanceOf[Zip].value, 12345L)
+    assertEquals(testBean.value("name"), "test")
+    assertEquals(testBean.value("age"), 42)
+    assertEquals(testBean.value("description"), Some("desc"))
+    assertEquals(testBean.value("zip").asInstanceOf[Zip].value, 12345L)
 
     assertEquals(testBean("name"), "test")
     assertEquals(testBean("age"), 42)
     assertEquals(testBean("description"), Some("desc"))
-    assertEquals(testBean("observable").asInstanceOf[StringProperty].getValue, "observable")
     assertEquals(testBean("zip").asInstanceOf[Zip].value, 12345L)
   }
 
   test("get value of members of java class") {
     val bean: TestJavaBean = new TestJavaBean()
     val testBean = DataAdapter[TestJavaBean](bean)
-    logger.debug(testBean.getProperty("date").toString)
-    assertEquals(testBean.getValue("name"), "test")
-    assertEquals(testBean.getValue("age"), 42)
+    assertEquals(testBean.value("name"), "test")
+    assertEquals(testBean.value("age"), 42)
 
   }
 
@@ -99,59 +91,34 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
     // #DataAdapterExpression
     val testBean = DataAdapter[TestBean](TestBean())
-    assertEquals(testBean.getValue("result ${2*4}"), "result 8")
-    assertEquals(testBean.getValue("${_self.description().get()}"), "desc")
-    assertEquals(testBean.getValue("!{_self.description().get()}"), "desc")
-    assertEquals(testBean.getValue("zip.value"), 12345)
-    assertEquals(testBean.getValue("${_self.age() / 2}"), 21.0)
-    assertEquals(testBean.getValue("${_self.multiply(2,3)}"), 6)
-    assertEquals(testBean.getValue("!{_self.multiply(2,3)}"), 6)
+    assertEquals(testBean.value("result ${2*4}"), "result 8")
+    assertEquals(testBean.value("${_self.description().get()}"), "desc")
+    assertEquals(testBean.value("!{_self.description().get()}"), "desc")
+    assertEquals(testBean.value("zip.value"), 12345)
+    assertEquals(testBean.value("${_self.age() / 2}"), 21.0)
+    assertEquals(testBean.value("${_self.multiply(2,3)}"), 6)
+    assertEquals(testBean.value("!{_self.multiply(2,3)}"), 6)
     // #DataAdapterExpression
 
-    assertEquals(testBean.getValue("doubleAge()"), 84)
+    assertEquals(testBean.value("doubleAge()"), 84)
   }
 
   test("update expressions") {
     val testBean = DataAdapter[TestBean](TestBean())
-    val observableAge = testBean.getIntegerProperty("${_self.age()}")
-    val observable = testBean.getIntegerProperty("${_self.doubleAge()}")
-    assertEquals(observableAge.getValue.toInt, 42)
-    assertEquals(observable.getValue.toInt, 84)
-
     testBean.updateValue("age", 40)
-    // only member expressions updated by default
-    assertEquals(observableAge.getValue.toInt, 40)
-    assertEquals(observable.getValue.toInt, 80) //
-
   }
 
   test("update child expressions") {
     val testBean = DataAdapter[ParentBean](ParentBean())
-    val observableName = testBean.getStringProperty("${_self.fullName()}")
-    assertEquals(observableName.getValue, "parentName : [child] childName")
     testBean.updateValue("parentName", "parent")
-    assertEquals(observableName.getValue, "parent : [child] childName")
     testBean.updateValue("child.childName", "child")
-    assertEquals(observableName.getValue, "parent : [child] child")
 
   }
 
   test("get observable property") {
     val testBean = DataAdapter[TestBean](TestBean())
 
-    val observable = testBean.getIntegerProperty("age")
-    assertEquals(observable.getValue.toInt, 42)
-
-  }
-
-  test("get observable expression property") {
-    val testBean = DataAdapter[ListClass](ListClass())
-
-    val observable = testBean.getIntegerProperty("${_self.list().size()}")
-    assertEquals(observable.getValue.toInt, 2)
-
-    val observableString = testBean.getStringProperty("List count: ${_self.list().size()}")
-    assertEquals(observableString.getValue, "List count: 2")
+    assertEquals(testBean.longValue("age"), 42L)
 
   }
 
@@ -159,16 +126,12 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
     val book = Book(1, "Programming In Scala", 852, Author("Martin Odersky"))
 
     val wrapper = DataAdapter[Book](book)
-    assertEquals(wrapper.getValue("title"), "Programming In Scala")
-    assertEquals(wrapper.getValue("author.name"), "Martin Odersky")
+    assertEquals(wrapper.value("title"), "Programming In Scala")
+    assertEquals(wrapper.value("author.name"), "Martin Odersky")
     wrapper.updateValue("author.name", "M. Odersky")
-    assertEquals(wrapper.getValue("author.name"), "M. Odersky")
+    assertEquals(wrapper.value("author.name"), "M. Odersky")
 
-    val observable = wrapper.getStringProperty("author.name")
-    assertEquals(observable.getValue, "M. Odersky")
-
-    observable.set("Martin Odersky")
-    assertEquals(wrapper.getValue("author.name"), "Martin Odersky")
+    assertEquals(wrapper.value("author.name"), "Martin Odersky")
   }
 
   test("handle scala map ") {
@@ -176,8 +139,8 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
     val book = DataAdapter[Map[String, Any]](map)
 
-    assertEquals(book.getValue("test"), 3)
-    assertEquals(book.getValue("test.test"), 4)
+    assertEquals(book.value("test"), 3)
+    assertEquals(book.value("test.test"), 4)
 
   }
 
@@ -187,22 +150,22 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
     assert(!testBean.hasChanges)
 
     testBean.updateValue("parentName", "newName")
-    assertEquals(testBean.getValue("parentName"), "newName")
+    assertEquals(testBean.value("parentName"), "newName")
     assert(testBean.hasChanges)
 
     testBean.revert()
-    assertEquals(testBean.getValue("parentName"), "parentName")
+    assertEquals(testBean.value("parentName"), "parentName")
     assert(!testBean.hasChanges)
 
     testBean.updateValue("child.childName", "newName")
-    assertEquals(testBean.getValue("child.childName"), "newName")
+    assertEquals(testBean.value("child.childName"), "newName")
     assert(testBean.hasChanges)
     testBean.updateValue("parentName", "newName")
     testBean.updateValue("parentName", "parentName")
     assert(testBean.hasChanges)
 
     testBean.revert()
-    assertEquals(testBean.getValue("child.childName"), "childName")
+    assertEquals(testBean.value("child.childName"), "childName")
 
     assert(!testBean.hasChanges)
   }
@@ -211,13 +174,13 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
     val testBean = DataAdapter[TestBean](TestBean())
     testBean.updateValue("age", "2")
-    assertEquals(testBean.getIntValue("age"), Some(2))
+    assertEquals(testBean.intOption("age"), Some(2))
     testBean.updateValue("age", 3L)
-    assertEquals(testBean.getIntValue("age"), Some(3))
+    assertEquals(testBean.intOption("age"), Some(3))
     testBean.updateValue("age", 4.0)
-    assertEquals(testBean.getIntValue("age"), Some(4))
+    assertEquals(testBean.intOption("age"), Some(4))
     testBean.updateValue("age", 5.0f)
-    assertEquals(testBean.getIntValue("age"), Some(5))
+    assertEquals(testBean.intOption("age"), Some(5))
 
   }
 
@@ -225,7 +188,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
 
     val testBean = DataAdapter[TestBean](TestBean())
     testBean.updateValues(Map("age" -> 2))
-    assertEquals(testBean.getIntValue("age"), Some(2))
+    assertEquals(testBean.intOption("age"), Some(2))
 
   }
 
