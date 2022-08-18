@@ -1,4 +1,8 @@
-# Adapter
+---
+title: Guide
+---
+
+# Data Adapter
 
 DataAdapter is one of the core concepts of this framework.
 It is an adapter for Java/Scala Beans and Maps.
@@ -45,6 +49,5 @@ val authorName = book.value("author.name")  // "Martin Odersky"
 
 
 ```
-
 
 

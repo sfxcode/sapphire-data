@@ -27,14 +27,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   def apply(key: String): Any =
     value(key)
 
-  def getOldValue(key: String): Any =
-    if (trackChanges) {
-      changeManagementMap.get(key).getOrElse(value(key))
-    } else {
-      value(key)
-    }
-
-  private def handleRelations(key: String): Boolean =
+  private def shouldHandleRelations(key: String): Boolean =
     key.contains(".") && !key.contains(ObjectExpressionHelper.ExpressionPrefix)
 
   def value(key: String): Any =
@@ -42,7 +35,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
       case map: scala.collection.Map[String, Any] => map(key)
       case javaMap: java.util.Map[String, Any] => javaMap.get(key)
       case _ =>
-        if (handleRelations(key)) {
+        if (shouldHandleRelations(key)) {
           val objectKey = key.substring(0, key.indexOf("."))
           val newKey = key.substring(key.indexOf(".") + 1)
           val relatedObject = value(objectKey)
@@ -56,6 +49,13 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
               null
           }
         }
+    }
+
+  def oldValue(key: String): Any =
+    if (trackChanges) {
+      changeManagementMap.get(key).getOrElse(value(key))
+    } else {
+      value(key)
     }
 
   def getValueForExpression[T <: Any](expression: String): Option[T] =
@@ -80,7 +80,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
         javaMap.put(key, newValue)
         preserveChanges(key, oldValue, newValue)
       case _ =>
-        if (handleRelations(key)) {
+        if (shouldHandleRelations(key)) {
           val objectKey = key.substring(0, key.indexOf("."))
           val newKey = key.substring(key.indexOf(".") + 1)
           val relatedObject = value(objectKey)

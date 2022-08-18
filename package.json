@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/sfxcode/sapphire-data#readme",
   "devDependencies": {
-    "vitepress": "^0.21.6"
+    "vitepress": "^1.0.0-alpha.8"
   }
 }

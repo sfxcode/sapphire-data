@@ -8,18 +8,19 @@ import java.util.Date
 trait ValueHelper extends LazyLogging {
 
   def value(key: String): Any
+  def oldValue(key: String): Any
 
   def valueOption(key: String, defaultValue: Option[Any] = None): Option[Any] =
     value(key) match {
       case v: Any => Some(v)
-      case _ => defaultValue
+      case _      => defaultValue
     }
 
   def stringOption(key: String, defaultValue: Option[String] = None): Option[String] =
     value(key) match {
       case s: String => Some(s)
-      case v: Any => Some(v.toString)
-      case _ => defaultValue
+      case v: Any    => Some(v.toString)
+      case _         => defaultValue
     }
 
   def stringValue(key: String): String =
@@ -27,9 +28,9 @@ trait ValueHelper extends LazyLogging {
 
   def dateOption(key: String, defaultValue: Option[Date] = None): Option[Date] =
     value(key) match {
-      case date: Date => Some(date)
+      case date: Date           => Some(date)
       case localDate: LocalDate => Some(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant))
-      case _ => defaultValue
+      case _                    => defaultValue
     }
 
   def dateValue(key: String): Date =
@@ -38,8 +39,8 @@ trait ValueHelper extends LazyLogging {
   def localDateOption(key: String, defaultValue: Option[LocalDate] = None): Option[LocalDate] =
     value(key) match {
       case localDate: LocalDate => Some(localDate)
-      case date: Date => Some(Instant.ofEpochMilli(date.getTime).atZone(ZoneId.systemDefault()).toLocalDate)
-      case _ => defaultValue
+      case date: Date           => Some(Instant.ofEpochMilli(date.getTime).atZone(ZoneId.systemDefault()).toLocalDate)
+      case _                    => defaultValue
     }
 
   def localDateValue(key: String): LocalDate =
@@ -48,9 +49,9 @@ trait ValueHelper extends LazyLogging {
   def localDateTimeOption(key: String, defaultValue: Option[LocalDateTime] = None): Option[LocalDateTime] =
     value(key) match {
       case localDateTime: LocalDateTime => Some(localDateTime)
-      case localDate: LocalDate => Some(localDate.atStartOfDay())
-      case date: Date => Some(date.toInstant.atZone(ZoneId.systemDefault).toLocalDateTime)
-      case _ => defaultValue
+      case localDate: LocalDate         => Some(localDate.atStartOfDay())
+      case date: Date                   => Some(date.toInstant.atZone(ZoneId.systemDefault).toLocalDateTime)
+      case _                            => defaultValue
     }
 
   def localDateTimeValue(key: String): LocalDateTime =
@@ -58,7 +59,7 @@ trait ValueHelper extends LazyLogging {
 
   def intOption(key: String, defaultValue: Option[Int] = None): Option[Int] =
     value(key) match {
-      case i: Int => Some(i)
+      case i: Int    => Some(i)
       case n: Number => Some(n.intValue())
       case s: String =>
         try Some(s.toInt)
@@ -73,7 +74,7 @@ trait ValueHelper extends LazyLogging {
 
   def longOption(key: String, defaultValue: Option[Long] = None): Option[Long] =
     value(key) match {
-      case l: Long => Some(l)
+      case l: Long   => Some(l)
       case n: Number => Some(n.longValue())
       case s: String =>
         try Some(s.toLong)
@@ -88,7 +89,7 @@ trait ValueHelper extends LazyLogging {
 
   def floatOption(key: String, defaultValue: Option[Float] = None): Option[Float] =
     value(key) match {
-      case f: Float => Some(f)
+      case f: Float  => Some(f)
       case n: Number => Some(n.floatValue())
       case s: String =>
         try Some(s.toFloat)
@@ -119,8 +120,8 @@ trait ValueHelper extends LazyLogging {
   def booleanOption(key: String, defaultValue: Option[Boolean] = None): Option[Boolean] =
     value(key) match {
       case d: Boolean => Some(d)
-      case s: String => Some(s.toBoolean)
-      case _ => defaultValue
+      case s: String  => Some(s.toBoolean)
+      case _          => defaultValue
     }
 
   def booleanValue(key: String): Boolean =
