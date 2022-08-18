@@ -2,6 +2,9 @@
 
 ## Versions
 
+### 2.0.0
+remove javafx
+
 ### 1.3.2
 * System Stage Key : SFX_SYSTEM_STAGE
 * Start vite docs
