@@ -95,13 +95,10 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
     val testBean = DataAdapter[TestBean](TestBean())
     assertEquals(testBean.value("result ${2*4}"), "result 8")
     assertEquals(testBean.value("${_self.description().get()}"), "desc")
-    assertEquals(testBean.value("!{_self.description().get()}"), "desc")
     assertEquals(testBean.value("zip.value"), 12345)
     assertEquals(testBean.value("${_self.age() / 2}"), 21.0)
     assertEquals(testBean.value("${_self.multiply(2,3)}"), 6)
-    assertEquals(testBean.value("!{_self.multiply(2,3)}"), 6)
     // #DataAdapterExpression
-
     assertEquals(testBean.value("doubleAge()"), 84)
   }
 

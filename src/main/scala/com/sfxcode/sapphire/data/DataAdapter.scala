@@ -35,8 +35,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
     }
 
   private def handleRelations(key: String): Boolean =
-    key.contains(".") && !key.contains(ObjectExpressionHelper.ExpressionPrefix) &&
-      !key.contains(ObjectExpressionHelper.FxmlExpressionPrefix)
+    key.contains(".") && !key.contains(ObjectExpressionHelper.ExpressionPrefix)
 
   def value(key: String): Any =
     wrappedData match {
