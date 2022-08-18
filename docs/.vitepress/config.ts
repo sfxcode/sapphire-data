@@ -64,4 +64,3 @@ function sidebarGuide() {
 
     ]
 }
-
