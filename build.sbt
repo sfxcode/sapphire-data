@@ -1,6 +1,6 @@
 name := "sapphire-data"
 
-crossScalaVersions := Seq("2.13.8", "3.1.3", "2.12.13")
+crossScalaVersions := Seq("3.2.1", "2.13.10", "2.12.13")
 
 scalaVersion := crossScalaVersions.value.head
 
@@ -18,9 +18,9 @@ test / parallelExecution := false
 
 libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.11" % Test
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.5" % Test
 
-val circeVersion = "0.14.2"
+val circeVersion = "0.14.3"
 
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
 
 // Environment
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.8.1"
+libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "2.9.0"
 
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
@@ -38,7 +38,7 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.2"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.0.23"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.1.2"
 
 // optional report support
 

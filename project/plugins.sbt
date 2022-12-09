@@ -10,11 +10,11 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-license-report" % "1.2.0")
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.6")
 
-addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.10.1")
+addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.10.4")
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.6.3")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.6.4")
 
 // Release
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.13")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.15")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
