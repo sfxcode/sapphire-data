@@ -11,7 +11,7 @@ import scala.jdk.CollectionConverters._
 
 class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = EmptyTypeHints)
   extends ValueHelper
-  with java.util.Map[String, Any]  {
+  with java.util.Map[String, Any] {
 
   val reflectedFields: immutable.Map[String, Field] = FieldRegistry.fieldMap(wrappedData.getClass)
   val changeManagementMap: mutable.HashMap[String, Any] = new mutable.HashMap[String, Any]()
