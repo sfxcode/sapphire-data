@@ -38,7 +38,7 @@ libraryDependencies += "com.typesafe" % "config" % "1.4.2"
 
 // Expression Language
 
-libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.1.2"
+libraryDependencies += "org.apache.tomcat" % "tomcat-jasper-el" % "10.1.4"
 
 // optional report support
 

@@ -3,7 +3,6 @@ package com.sfxcode.sapphire.data
 import com.sfxcode.sapphire.data.el.{ Expressions, ObjectExpressionHelper }
 import com.sfxcode.sapphire.data.reflect.FieldMeta._
 import com.sfxcode.sapphire.data.reflect.{ FieldMeta, FieldRegistry, ReflectionTools }
-import com.typesafe.scalalogging.LazyLogging
 
 import java.lang.reflect.Field
 import java.util
@@ -12,8 +11,7 @@ import scala.jdk.CollectionConverters._
 
 class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = EmptyTypeHints)
   extends ValueHelper
-  with java.util.Map[String, Any]
-  with LazyLogging {
+  with java.util.Map[String, Any]  {
 
   val reflectedFields: immutable.Map[String, Field] = FieldRegistry.fieldMap(wrappedData.getClass)
   val changeManagementMap: mutable.HashMap[String, Any] = new mutable.HashMap[String, Any]()
@@ -27,7 +25,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   def apply(key: String): Any =
     value(key)
 
-  private def shouldHandleRelations(key: String): Boolean =
+  protected def shouldHandleRelations(key: String): Boolean =
     key.contains(".") && !key.contains(ObjectExpressionHelper.ExpressionPrefix)
 
   def value(key: String): Any =
