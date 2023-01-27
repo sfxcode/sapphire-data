@@ -35,7 +35,7 @@ class DataAdapterChildrenSpec extends munit.FunSuite with LazyLogging {
 
     adapter.updateValue("child.address", Address("newStreet"))
 
-    val street = adapter.wrappedData.child.address.street
+    val street = adapter.data.child.address.street
 
     assertEquals(street, "newStreet")
 

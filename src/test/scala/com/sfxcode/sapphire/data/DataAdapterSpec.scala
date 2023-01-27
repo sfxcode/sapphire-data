@@ -53,7 +53,7 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
     val testBean2 = DataAdapter[TestBean](TestBean())
 
     testBean2.updateValue("description", None)
-    assertEquals(testBean2.wrappedData.description, None)
+    assertEquals(testBean2.data.description, None)
     assertEquals(testBean2.value("description"), None)
 
   }
@@ -114,11 +114,12 @@ class DataAdapterSpec extends munit.FunSuite with LazyLogging {
   test("handle complex case classes") {
     val book = Book(1, "Programming In Scala", 852, Author("Martin Odersky"))
 
-    val wrapper = DataAdapter[Book](book)
-    assertEquals(wrapper.value("title"), "Programming In Scala")
-    assertEquals(wrapper.value("author.name"), "Martin Odersky")
-    wrapper.updateValue("author.name", "M. Odersky")
-    assertEquals(wrapper.value("author.name"), "M. Odersky")
+    val adapter = DataAdapter[Book](book)
+    assertEquals(adapter.value("title"), "Programming In Scala")
+    assertEquals(adapter.value("author.name"), "Martin Odersky")
+    adapter.updateValue("author.name", "M. Odersky")
+    assertEquals(adapter.value("author.name"), "M. Odersky")
+    assertEquals(adapter.data.author.name, "M. Odersky")
   }
 
   test("handle scala map ") {

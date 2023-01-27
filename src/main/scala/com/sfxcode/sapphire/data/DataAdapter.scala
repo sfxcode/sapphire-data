@@ -9,7 +9,7 @@ import java.util
 import scala.collection.{ immutable, mutable }
 import scala.jdk.CollectionConverters._
 
-class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = EmptyTypeHints)
+class DataAdapter[T <: AnyRef](private val wrappedData: T, typeHints: List[FieldMeta] = EmptyTypeHints)
   extends ValueHelper
   with java.util.Map[String, Any] {
 
@@ -20,7 +20,7 @@ class DataAdapter[T <: AnyRef](val wrappedData: T, typeHints: List[FieldMeta] = 
   var trackChanges: Boolean = true
   var parentDataAdapter: Option[DataAdapter[AnyRef]] = None
 
-  def data: AnyRef = wrappedData
+  def data: T = wrappedData
 
   def apply(key: String): Any =
     value(key)
